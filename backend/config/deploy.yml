@@ -2,7 +2,7 @@
 service: prototype-mvp-bck
 
 # Name of the container image.
-image: appointmeadmin/prototype-marketing-bck
+image: appointmeadmin/prototype-mvp-bck
 
 # Deploy to these servers.
 servers:
