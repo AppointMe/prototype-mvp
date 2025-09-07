@@ -1,0 +1,41 @@
+# Name of your application. Used to uniquely configure containers.
+service: prototype-mvp-bck
+
+# Name of the container image.
+image: appointmeadmin/prototype-marketing-bck
+
+# Deploy to these servers.
+servers:
+  web:
+    - server-1.appointme.today
+
+proxy:
+  ssl: true
+  host: pty-mvp-bck.appointme.today
+  app_port: 8090
+  healthcheck:
+    interval: 3
+    path: /api/health
+    timeout: 3
+
+# Credentials for your image host.
+registry:
+  username: appointmeadmin
+  password:
+    - KAMAL_REGISTRY_PASSWORD
+
+# Configure builder setup.
+builder:
+  arch: amd64
+  context: .
+
+aliases:
+  shell: app exec --interactive --reuse "bash"
+
+ssh:
+  user: root
+  keys: ["~/.ssh/AppointMe/appointme_server_1.pem"]
+
+volumes:
+  #- /path/on/host:/path/in/container:ro
+  - ~/prototype-mvp-bck/pb_data:/app/pb_data # Persistent storage for pocketbase
