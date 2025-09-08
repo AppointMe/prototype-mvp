@@ -41,7 +41,7 @@ export default function Calendar({appointments = []}) {
         "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
         "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
     ];
-    const weekDays = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
+    const weekDays = ["DOM", "LUN", "MAR", "MIE", "JUE", "VIE", "SAB"];
 
     const prevMonth = () => {
         if (currentMonth === 0) {
@@ -99,6 +99,9 @@ export default function Calendar({appointments = []}) {
                     </div>
                 ))}
             </div>
+
+            {/* Línea separadora */}
+            <div className="border-b border border-[var(--color-secondary)] my-4" />
 
             {/* Días */}
             <div className="grid grid-cols-7 grid-rows-6 gap-1 flex-1 h-full min-h-0">
