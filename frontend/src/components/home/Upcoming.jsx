@@ -26,12 +26,31 @@ export default function Upcoming({ appointments = [] }) {
                                     month: "short",
                                 })}
                             </div>
+
                             <div className="font-medium text-gray-800">
-                                {new Date(app.schedule).toLocaleTimeString("es-ES", {
-                                    hour: "2-digit",
-                                    minute: "2-digit",
-                                })}
+                                {(() => {
+                                    const start = new Date(app.schedule);
+                                    const end = new Date(start);
+
+                                    end.setMinutes(start.getMinutes() + app.duration * 60);
+
+                                    return (
+                                        <>
+                                            {start.toLocaleTimeString("es-ES", {
+                                                hour: "2-digit",
+                                                minute: "2-digit",
+                                            })}{" "}
+                                            -{" "}
+                                            {end.toLocaleTimeString("es-ES", {
+                                                hour: "2-digit",
+                                                minute: "2-digit",
+                                            })}
+                                        </>
+                                    );
+                                })()}
                             </div>
+
+
                             <div className="text-gray-700 text-sm">{app.title}</div>
                             <div className="text-xs text-gray-500">{app.business}</div>
                         </li>
