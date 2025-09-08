@@ -5,7 +5,7 @@ export default function Upcoming({ appointments = [] }) {
         <div className="bg-white rounded-2xl shadow-md p-4 w-full max-w-md">
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-semibold">Próximas Citas</h2>
-                <button className="text-sm border px-3 py-1 rounded-lg text-purple-600 border-purple-600 hover:bg-purple-50">
+                <button className="text-sm border px-3 py-1 rounded-lg text-[var(--color-primary)] border-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-[var(--color-accent)] transition">
                     Nueva cita +
                 </button>
             </div>
