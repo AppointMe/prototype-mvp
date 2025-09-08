@@ -37,9 +37,7 @@ export default function Home() {
 
     return (
         <div className="flex flex-col w-full h-screen">
-            {/* Navbar arriba */}
-            <Navbar />
-
+            
             {/* Contenido principal */}
             <div className="flex flex-col items-center w-full flex-1">
                 <div className="flex flex-row justify-between items-stretch w-full p-4 gap-6 h-full">
