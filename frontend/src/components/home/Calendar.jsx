@@ -1,6 +1,6 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 
-export default function Calendar({appointments = []}) {
+export default function Calendar({ appointments = [] }) {
     const today = new Date();
     const [currentMonth, setCurrentMonth] = useState(today.getMonth());
     const [currentYear, setCurrentYear] = useState(today.getFullYear());
@@ -24,8 +24,8 @@ export default function Calendar({appointments = []}) {
     }, {});
 
     const monthNames = [
-        "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-        "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+        "Enero","Febrero","Marzo","Abril","Mayo","Junio",
+        "Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"
     ];
     const weekDays = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
 
@@ -80,14 +80,19 @@ export default function Calendar({appointments = []}) {
             {/* Días */}
             <div className="grid grid-cols-7 text-center">
                 {/* Espacios vacíos antes del primer día */}
-                {Array.from({length: firstDay}).map((_, i) => (
-                    <div key={`empty-${i}`} className="py-4"/>
+                {Array.from({ length: firstDay }).map((_, i) => (
+                    <div key={`empty-${i}`} className="py-4" />
                 ))}
 
                 {/* Días del mes */}
-                {Array.from({length: daysInMonth}).map((_, dayIndex) => {
+                {Array.from({ length: daysInMonth }).map((_, dayIndex) => {
                     const day = dayIndex + 1;
                     const dayAppointments = appointmentsByDay[day] || [];
+
+                    const isToday =
+                        day === today.getDate() &&
+                        currentMonth === today.getMonth() &&
+                        currentYear === today.getFullYear();
 
                     return (
                         <div
@@ -95,16 +100,15 @@ export default function Calendar({appointments = []}) {
                             className="py-4 flex flex-col items-center text-sm relative"
                         >
               <span
-                  className={`${
-                      day === today.getDate() &&
-                      currentMonth === today.getMonth() &&
-                      currentYear === today.getFullYear()
-                          ? "text-purple-600 font-bold"
+                  className={`flex items-center justify-center w-8 h-8 rounded-full ${
+                      isToday
+                          ? "bg-purple-100 text-purple-700 font-bold"
                           : "text-gray-800"
                   }`}
               >
                 {day}
               </span>
+
                             {/* Puntos de citas */}
                             <div className="flex space-x-0.5 mt-1">
                                 {dayAppointments.slice(0, 4).map((_, i) => (
