@@ -52,7 +52,7 @@ export default function Calendar({appointments = []}) {
     };
 
     return (
-        <div className="bg-white rounded-2xl shadow-md p-4 w-full mr-4">
+        <div className="bg-white rounded-2xl shadow-md p-4 w-full flex-1 h-full flex flex-col">
             {/* Header calendario */}
             <div className="flex justify-between items-center mb-4">
                 <button
@@ -82,7 +82,7 @@ export default function Calendar({appointments = []}) {
             </div>
 
             {/* Días */}
-            <div className="grid grid-cols-7 text-center">
+            <div className="grid grid-cols-7 grid-rows-6 gap-1 flex-1 h-full min-h-0">
                 {/* Espacios vacíos antes del primer día */}
                 {Array.from({length: firstDay}).map((_, i) => (
                     <div key={`empty-${i}`} className="py-4"/>
@@ -101,7 +101,7 @@ export default function Calendar({appointments = []}) {
                     return (
                         <div
                             key={day}
-                            className="py-4 flex flex-col items-center text-sm relative"
+                            className="flex flex-col items-center justify-start p-1 h-full min-h-0 cursor-pointer hover:bg-gray-100 rounded-lg"
                         >
                             <span
                                 className={`flex items-center justify-center w-8 h-8 rounded-full ${

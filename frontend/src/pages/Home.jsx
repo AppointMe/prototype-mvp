@@ -35,8 +35,8 @@ export default function Home() {
     );
 
     return (
-        <div className="flex flex-col items-center w-full">
-            <div className="flex flex-row justify-between items-stretch w-full p-4 gap-6">
+        <div className="flex flex-col items-center w-full h-[calc(90vh-80px)]">
+            <div className="flex flex-row justify-between items-stretch w-full p-4 gap-6 h-full">
                 {/* Calendar → todas */}
                 <Calendar appointments={appointments} />
 
