@@ -76,28 +76,35 @@ export default function Calendar({appointments = []}) {
             <div className="flex justify-between items-center mb-4">
                 <button
                     onClick={prevMonth}
-                    className="px-2 py-1 rounded-lg hover:bg-gray-100"
+                    className="px-2 py-1 rounded-lg hover:bg-gray-100 text-3xl"
                 >
-                    ◀
+                    {"<"}
                 </button>
                 <h2 className="font-semibold text-lg">
                     {monthNames[currentMonth]}, {currentYear}
                 </h2>
                 <button
                     onClick={nextMonth}
-                    className="px-2 py-1 rounded-lg hover:bg-gray-100"
+                    className="px-2 py-1 rounded-lg hover:bg-gray-100 text-3xl"
                 >
-                    ▶
+                    {">"}
                 </button>
             </div>
 
             {/* Encabezados de semana */}
-            <div className="grid grid-cols-7 text-center font-medium text-gray-600">
-                {weekDays.map((day) => (
-                    <div key={day} className="py-1">
-                        {day}
-                    </div>
-                ))}
+            <div className="grid grid-cols-7 text-center font-medium">
+                {weekDays.map((day, idx) => {
+                    // Determinar si este header es el día actual
+                    const isTodayHeader = today.getDay() === idx;
+                    return (
+                        <div
+                            key={day}
+                            className={`py-1 ${isTodayHeader ? "text-[var(--color-primary)] font-semibold" : "text-[var(--color-stext)]"}`}
+                        >
+                            {day}
+                        </div>
+                    );
+                })}
             </div>
 
             {/* Línea separadora */}
@@ -123,7 +130,7 @@ export default function Calendar({appointments = []}) {
                         currentMonth === today.getMonth() &&
                         currentYear === today.getFullYear();
 
-                    // Determinar si el día está en la semana actual
+                    // Determinar si el día está en la semana current
                     let isCurrentWeek = false;
                     if (currentWeekRange) {
                         const date = new Date(currentYear, currentMonth, day);
@@ -148,7 +155,7 @@ export default function Calendar({appointments = []}) {
                                 className={`flex items-center justify-center w-8 h-8 rounded-full ${
                                     isToday
                                         ? "bg-purple-100 text-purple-700 font-bold"
-                                        : ""
+                                        : "font-medium"
                                 } ${dayTextClass}`}
                             >
                                 {day}
