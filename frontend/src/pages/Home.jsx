@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { pb } from "@/lib/pocketbase.js";
+
 import Upcoming from "@/components/Home/Upcoming";
+import Calendar from "@components/home/Calendar.jsx";
 
 export default function Home() {
     const [appointments, setAppointments] = useState([]);
@@ -21,8 +23,8 @@ export default function Home() {
     return (
         <div className="flex flex-col items-center">
             <div className="flex flex-row justify-between items-center w-full p-4">
-                {/*Temp div covering 60% of width*/}
-                <div></div>
+                {/* Calendar */}
+                <Calendar appointments={appointments} />
 
                 {/*Upcoming widget*/}
                 <Upcoming appointments={appointments} />
