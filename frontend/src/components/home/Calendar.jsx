@@ -1,6 +1,16 @@
 import React, {useState} from "react";
 
 export default function Calendar({appointments = []}) {
+    // Helper para obtener el rango de la semana actual
+    function getCurrentWeekRange(date) {
+        const dayOfWeek = date.getDay(); // 0 (domingo) - 6 (sábado)
+        const start = new Date(date);
+        start.setDate(date.getDate() - dayOfWeek);
+        const end = new Date(date);
+        end.setDate(date.getDate() + (6 - dayOfWeek));
+        return [start, end];
+    }
+
     const today = new Date();
     const [currentMonth, setCurrentMonth] = useState(today.getMonth());
     const [currentYear, setCurrentYear] = useState(today.getFullYear());
@@ -51,6 +61,15 @@ export default function Calendar({appointments = []}) {
         }
     };
 
+    // Calcular rango de la semana actual (solo si el mes/año coincide)
+    let currentWeekRange = null;
+    if (
+        currentMonth === today.getMonth() &&
+        currentYear === today.getFullYear()
+    ) {
+        currentWeekRange = getCurrentWeekRange(today);
+    }
+
     return (
         <div className="bg-white rounded-2xl shadow-md p-4 w-full flex-1 h-full flex flex-col">
             {/* Header calendario */}
@@ -85,7 +104,10 @@ export default function Calendar({appointments = []}) {
             <div className="grid grid-cols-7 grid-rows-6 gap-1 flex-1 h-full min-h-0">
                 {/* Espacios vacíos antes del primer día */}
                 {Array.from({length: firstDay}).map((_, i) => (
-                    <div key={`empty-${i}`} className="py-4"/>
+                    <div
+                        key={`empty-${i}`}
+                        className="py-4 text-color-border"
+                    />
                 ))}
 
                 {/* Días del mes */}
@@ -98,17 +120,33 @@ export default function Calendar({appointments = []}) {
                         currentMonth === today.getMonth() &&
                         currentYear === today.getFullYear();
 
+                    // Determinar si el día está en la semana actual
+                    let isCurrentWeek = false;
+                    if (currentWeekRange) {
+                        const date = new Date(currentYear, currentMonth, day);
+                        isCurrentWeek =
+                            date >= currentWeekRange[0] && date <= currentWeekRange[1];
+                    }
+
+                    // Estilos de color y tamaño según condición
+                    let dayTextClass = "";
+                    if (isCurrentWeek) {
+                        dayTextClass = "text-color-text text-[24px]";
+                    } else {
+                        dayTextClass = "text-color-stext text-[20px]";
+                    }
+
                     return (
                         <div
                             key={day}
                             className="flex flex-col items-center justify-start p-1 h-full min-h-0 cursor-pointer hover:bg-gray-100 rounded-lg"
                         >
                             <span
-                                className={`flex items-center justify-center w-8 h-8 rounded-full text-3xl ${
+                                className={`flex items-center justify-center w-8 h-8 rounded-full ${
                                     isToday
                                         ? "bg-purple-100 text-purple-700 font-bold"
-                                        : "text-gray-800"
-                                }`}
+                                        : ""
+                                } ${dayTextClass}`}
                             >
                                 {day}
                             </span>
