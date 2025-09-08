@@ -1,16 +1,32 @@
-import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router'
-import { pb } from '@/lib/pocketbase.js'
+import React, { useEffect, useState } from "react";
+import { pb } from "@/lib/pocketbase.js";
+import Upcoming from "@/components/Home/Upcoming";
 
-const POCKETBASE_ENDPOINT = import.meta.env.VITE_POCKETBASE_URL
+export default function Home() {
+    const [appointments, setAppointments] = useState([]);
 
-export default function Login() {
-    console.log(localStorage.getItem('user'))
+    useEffect(() => {
+        const user = JSON.parse(localStorage.getItem("user"));
+        if (!user?.id) return;
+
+        pb.collection("appointments")
+            .getFullList(200, {
+                filter: `customer="${user.id}"`,
+                sort: "schedule",
+            })
+            .then((records) => setAppointments(records))
+            .catch((err) => console.error("Error cargando citas:", err));
+    }, []);
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen">
-            <h1 className="text-3xl font-bold">Welcome Home!</h1>
-            <p className="mt-4">You are logged in.</p>
+        <div className="flex flex-col items-center">
+            <div className="flex flex-row justify-between items-center w-full p-4">
+                {/*Temp div covering 60% of width*/}
+                <div></div>
+
+                {/*Upcoming widget*/}
+                <Upcoming appointments={appointments} />
+            </div>
         </div>
-    )
+    );
 }
