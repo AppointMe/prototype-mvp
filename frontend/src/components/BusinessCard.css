@@ -1,0 +1,139 @@
+.business-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  padding: 1.5rem;
+  margin: 1rem 0;
+  font-family: 'Montserrat', Arial, sans-serif;
+  width: 100%;
+}
+
+.business-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.business-logo {
+  width: 56px;
+  height: 56px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.business-info {
+  flex: 1;
+  min-width: 160px;
+}
+
+.business-name {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.business-address {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.business-rating {
+  display: flex;
+  gap: 4px;
+}
+
+.star {
+  flex-shrink: 0;
+}
+
+.business-services {
+  margin-top: 1.2rem;
+}
+
+.services-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.services-title {
+  font-weight: 700;
+}
+
+.view-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: #111;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.arrow-icon {
+  flex-shrink: 0;
+}
+
+.services-list {
+  margin-top: 0.5rem;
+}
+
+.service-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid #f0f0f0;
+  flex-wrap: wrap;
+}
+
+.service-name {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.service-price {
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.schedule-btn {
+  background: #fff;
+  border: 1px solid #2e1e8f;
+  color: #2e1e8f;
+  border-radius: 20px;
+  padding: 0.3rem 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 0.3rem;
+}
+
+.schedule-btn:hover {
+  background: #2e1e8f;
+  color: #fff;
+}
+
+@media (max-width: 480px) {
+  .business-card {
+    padding: 1rem;
+  }
+  .business-name {
+    font-size: 1rem;
+  }
+  .business-address {
+    font-size: 0.8rem;
+  }
+  .business-rating {
+    font-size: 0.9rem;
+  }
+  .schedule-btn {
+    width: 100%;
+    text-align: center;
+  }
+}
