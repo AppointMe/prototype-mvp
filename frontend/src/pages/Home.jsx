@@ -4,6 +4,7 @@ import { pb } from "@/lib/pocketbase.js";
 import Upcoming from "@/components/Home/Upcoming";
 import Calendar from "@/components/Home/Calendar";
 import PastAppointments from "@/components/Home/PastAppointments";
+import Navbar from "@/components/navbar/navbar.jsx";
 
 export default function Home() {
     const [appointments, setAppointments] = useState([]);
@@ -35,17 +36,23 @@ export default function Home() {
     );
 
     return (
-        <div className="flex flex-col items-center w-full h-[calc(90vh-80px)]">
-            <div className="flex flex-row justify-between items-stretch w-full p-4 gap-6 h-full">
-                {/* Calendar → todas */}
-                <Calendar appointments={appointments} />
+        <div className="flex flex-col w-full h-screen">
+            {/* Navbar arriba */}
+            <Navbar />
 
-                {/* Upcoming → solo futuras */}
-                <Upcoming appointments={upcomingAppointments} />
+            {/* Contenido principal */}
+            <div className="flex flex-col items-center w-full flex-1">
+                <div className="flex flex-row justify-between items-stretch w-full p-4 gap-6 h-full">
+                    {/* Calendar → todas */}
+                    <Calendar appointments={appointments} />
 
+                    {/* Upcoming → solo futuras */}
+                    <Upcoming appointments={upcomingAppointments} />
+                </div>
+
+                {/* Past → solo pasadas */}
+                <PastAppointments appointments={pastAppointments} />
             </div>
-            {/* Past → solo pasadas */}
-            <PastAppointments appointments={pastAppointments} />
         </div>
     );
 }
