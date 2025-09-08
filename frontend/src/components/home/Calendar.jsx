@@ -104,7 +104,7 @@ export default function Calendar({appointments = []}) {
                             className="flex flex-col items-center justify-start p-1 h-full min-h-0 cursor-pointer hover:bg-gray-100 rounded-lg"
                         >
                             <span
-                                className={`flex items-center justify-center w-8 h-8 rounded-full ${
+                                className={`flex items-center justify-center w-8 h-8 rounded-full text-3xl ${
                                     isToday
                                         ? "bg-purple-100 text-purple-700 font-bold"
                                         : "text-gray-800"

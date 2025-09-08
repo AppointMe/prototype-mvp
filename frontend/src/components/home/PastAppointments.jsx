@@ -41,13 +41,14 @@ export default function PastAppointments({ appointments = [] }) {
                     return (
                         <li
                             key={appointment.id}
-                            className="flex flex-row items-center flex-1 min-w-[180px] max-w-xs mr-4 last:mr-0 bg-gray-50 rounded-xl p-4 shadow-sm"
+                            className="flex flex-row items-center flex-1 min-w-[180px] max-w-xs mr-4 last:mr-0 bg-white rounded-xl p-4 border-[var(--color-border)] transition"
+                            style={{ borderWidth: '0.5px' }}
                         >
                             {imgUrl ? (
                                 <img
                                     src={imgUrl}
                                     alt={appointment.expand.service.title}
-                                    className="w-12 h-12 rounded-xl object-cover border border-gray-200 mb-2"
+                                    className="w-22 h-22 rounded-full object-cover border border-gray-200 mb-2"
                                 />
                             ) : (
                                 <div className="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center text-gray-400 mb-2">
@@ -58,10 +59,10 @@ export default function PastAppointments({ appointments = [] }) {
                                 <p className="font-medium text-gray-800 truncate">
                                     {appointment.expand.service.title}
                                 </p>
-                                <p className="text-sm text-gray-500 truncate">
+                                <p className="text-xs text-[var(--color-text)] mb-2">{formattedDate}</p>
+                                <p className="text-sm text-[var(--color-stext)] truncate">
                                     {appointment.expand.service.business}
                                 </p>
-                                <p className="text-xs text-gray-400">{formattedDate}</p>
                                 <button
                                     className="mt-2 text-xs border px-2 py-1 rounded-lg text-[var(--color-primary)] border-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-[var(--color-accent)] transition"
                                     onClick={() => alert('Funcionalidad de calificación no implementada.')}

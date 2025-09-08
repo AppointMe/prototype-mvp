@@ -18,16 +18,8 @@ export default function Upcoming({appointments = []}) {
                     {appointments.map((app) => (
                         <li
                             key={app.id}
-                            className="p-3 rounded-xl border bg-gray-50 hover:bg-gray-100 transition"
+                            className="p-3 rounded-xl bg-[#FBFBFB] hover:bg-gray-100 transition"
                         >
-                            <div className="text-sm text-gray-500">
-                                {new Date(app.schedule).toLocaleDateString("es-ES", {
-                                    weekday: "short",
-                                    day: "numeric",
-                                    month: "short",
-                                })}
-                            </div>
-
                             <div className="font-medium text-gray-800">
                                 {(() => {
                                     const start = new Date(app.schedule);
@@ -51,6 +43,13 @@ export default function Upcoming({appointments = []}) {
                                 })()}
                             </div>
 
+                            <div className="text-sm text-gray-500">
+                                {new Date(app.schedule).toLocaleDateString("es-ES", {
+                                    weekday: "short",
+                                    day: "numeric",
+                                    month: "short",
+                                })}
+                            </div>
 
                             <div className="text-gray-700 text-sm">{app.expand.service.title}</div>
                             <div className="text-xs text-gray-500">{app.expand.service.business}</div>

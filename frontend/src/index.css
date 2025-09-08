@@ -3,10 +3,12 @@
 :root {
   /* 🎨 Colores */
   --color-primary: #311B92;
-  --color-secondary: #9FA8DA;
+  --color-secondary: #BBDEFB;
   --color-accent: #BBDEFB;
   --color-bg: #FBFBFB;
   --color-text: #151419;
+  --color-stext: #757575; /* secondary text color */
+  --color-border: #BDBDBD;
 
   /* 🧬 Tipografía */
   --font-main: 'Red Hat Display', sans-serif;
