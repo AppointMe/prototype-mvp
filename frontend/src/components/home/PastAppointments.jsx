@@ -21,8 +21,12 @@ export default function PastAppointments({ appointments = [] }) {
 
     return (
         <div className="bg-white rounded-2xl shadow-md p-4 w-full">
-            <h2 className="text-lg font-semibold mb-4 rounded-2xl bg-[var(--color-primary)] text-white inline-block px-8 py-1">
-                Citas recientes
+            <h2 className="text-lg mb-4 rounded-2xl bg-[var(--color-primary)] text-white inline-block px-8 py-1"
+            style={
+                { fontFamily: 'var(--font-heading)'}
+            }
+            >
+                CITAS RECIENTES
             </h2>
 
             <ul className="flex flex-row overflow-x-auto">
