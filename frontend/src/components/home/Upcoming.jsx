@@ -1,11 +1,12 @@
 import React from "react";
 
-export default function Upcoming({ appointments = [] }) {
+export default function Upcoming({appointments = []}) {
     return (
         <div className="bg-white rounded-2xl shadow-md p-4 w-full max-w-md">
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-semibold">Próximas Citas</h2>
-                <button className="text-sm border px-3 py-1 rounded-lg text-[var(--color-primary)] border-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-[var(--color-accent)] transition">
+                <button
+                    className="text-sm border px-3 py-1 rounded-lg text-[var(--color-primary)] border-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-[var(--color-accent)] transition">
                     Nueva cita +
                 </button>
             </div>
@@ -51,8 +52,8 @@ export default function Upcoming({ appointments = [] }) {
                             </div>
 
 
-                            <div className="text-gray-700 text-sm">{app.title}</div>
-                            <div className="text-xs text-gray-500">{app.business}</div>
+                            <div className="text-gray-700 text-sm">{app.service.title}</div>
+                            <div className="text-xs text-gray-500">{app.service.business}</div>
                         </li>
                     ))}
                 </ul>
