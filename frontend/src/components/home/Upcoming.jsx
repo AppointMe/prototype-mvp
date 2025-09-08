@@ -52,8 +52,8 @@ export default function Upcoming({appointments = []}) {
                             </div>
 
 
-                            <div className="text-gray-700 text-sm">{app.service.title}</div>
-                            <div className="text-xs text-gray-500">{app.service.business}</div>
+                            <div className="text-gray-700 text-sm">{app.expand.service.title}</div>
+                            <div className="text-xs text-gray-500">{app.expand.service.business}</div>
                         </li>
                     ))}
                 </ul>
