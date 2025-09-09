@@ -4,12 +4,13 @@ import { useLocation, useSearchParams } from "react-router-dom";
 import { pb } from "@/lib/pocketbase.js";
 
 export default function ExploreResult() {
-    const location = useLocation();
+    const { state } = useLocation();
     const [searchParams] = useSearchParams();
 
     // si viene por state:
-    const stateCategory = location.state?.category || null;
-    const stateServices = location.state?.services || null;
+    const stateCategory = state?.category || null;
+    const stateServices = state?.services || null;
+    const meta = state?.searchMeta || null;
 
     const [category, setCategory] = useState(
         stateCategory || searchParams.get("category") || ""
@@ -38,24 +39,33 @@ export default function ExploreResult() {
     
 
     return (
-        <div className="p-6">
-            <h1 className="text-xl font-bold" style={{ color: "#311B92" }}>
-                {category ? `Servicios: ${category}` : "Servicios"}
-            </h1>
+    <div className="p-6">
+      <h1 className="text-xl font-bold text-[#311B92]">
+        {category}
+      </h1>
 
-            {loading && <p>Cargando…</p>}
-            {!loading && services.length === 0 && <p>Sin resultados.</p>}
-
-            {/* placeholder simple — otra persona lo “pone bonito” */}
-            <ul className="mt-4 space-y-2">
-                {services.map((s) => (
-                    <li key={s.id}>
-                        <span className="font-semibold text-[#311B92]">{s.title || "Servicio"}</span> —
-                        <span className="text-sm text-gray-600">{Array.isArray(s.category) ? s.category.join(", ") : s.category}</span>
-                        <div className="text-xs text-gray-400">ID: {s.id}</div>
-                    </li>
-                ))}
-            </ul>
+      {/* ✅ Muestra hora/fecha si viene de búsqueda */}
+      {meta && (
+        <div className="text-sm text-gray-500 mt-1">
+          Fecha buscada: <strong>{meta.date}</strong> a las <strong>{meta.time}</strong> en <strong>{meta.location}</strong>
         </div>
-    );
+      )}
+
+      <p className="text-sm text-gray-500 mt-2">
+        {services.length} resultado{services.length === 1 ? "" : "s"} encontrado{services.length === 1 ? "" : "s"}
+      </p>
+
+      <ul className="mt-4 space-y-2">
+        {services.map((s) => (
+          <li key={s.id}>
+            <span className="font-semibold text-[#311B92]">{s.title || "Servicio"}</span> —{" "}
+            <span className="text-sm text-gray-600">
+              {Array.isArray(s.category) ? s.category.join(", ") : s.category}
+            </span>
+            <div className="text-xs text-gray-400">ID: {s.id}</div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 }

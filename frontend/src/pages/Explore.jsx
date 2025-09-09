@@ -33,10 +33,46 @@ export default function Explore() {
   }
 };
 
-  const handleSearch = (data) => {
-    console.log("📌 Datos de búsqueda recibidos:", data);
-    // Aquí podrías filtrar con selectedCategory también
-  };
+  const handleSearch = async ({ query, location, date, time }) => {
+  try {
+    if (!query.trim()) {
+      alert("Escribe un término de búsqueda.");
+      return;
+    }
+
+    const safe = query.replace(/"/g, '\\"');
+    const services = await pb.collection("services").getFullList(500, {
+      filter: `title ~ "${safe}"`,
+      sort: "-created",
+    });
+
+    console.log("🔍 Buscando por:", query);
+    console.log("🕒 Hora solicitada:", date, time);
+    console.log("✅ Resultados:", services.length);
+
+    if (!services.length) {
+      alert(`No se encontraron servicios con el término "${query}".`);
+      return;
+    }
+
+    // ✅ Pasar también la hora, fecha y lugar como parte del `state`
+    navigate("/explore_result", {
+      state: {
+        category: `Resultado de: "${query}"`,
+        services,
+        searchMeta: {
+          query,
+          location,
+          date,
+          time,
+        },
+      },
+    });
+  } catch (e) {
+    console.error("❌ Error en búsqueda:", e);
+    alert("Ocurrió un error al buscar servicios.");
+  }
+};
 
   return (
     <div className="flex flex-col items-center justify-start w-full h-full p-8">
