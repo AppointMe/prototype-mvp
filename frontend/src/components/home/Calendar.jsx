@@ -92,7 +92,7 @@ export default function Calendar({appointments = []}) {
             </div>
 
             {/* Encabezados de semana */}
-            <div className="grid grid-cols-7 text-center font-medium">
+            <div className="grid grid-cols-7 text-center font-medium px-8">
                 {weekDays.map((day, idx) => {
                     // Determinar si este header es el día actual
                     const isTodayHeader = today.getDay() === idx;
@@ -108,10 +108,10 @@ export default function Calendar({appointments = []}) {
             </div>
 
             {/* Línea separadora */}
-            <div className="border-b border border-[var(--color-secondary)] my-4" />
+            <div className="border-b border border-[var(--color-secondary)] my-4 mx-4" />
 
             {/* Días */}
-            <div className="grid grid-cols-7 grid-rows-6 gap-1 flex-1 h-full min-h-0">
+            <div className="grid grid-cols-7 grid-rows-6 gap-1 flex-1 h-full min-h-0 px-8">
                 {/* Espacios vacíos antes del primer día */}
                 {Array.from({length: firstDay}).map((_, i) => (
                     <div
@@ -141,9 +141,9 @@ export default function Calendar({appointments = []}) {
                     // Estilos de color y tamaño según condición
                     let dayTextClass = "";
                     if (isCurrentWeek) {
-                        dayTextClass = "text-color-text text-[24px]";
+                        dayTextClass = "text-color-text text-[32px]";
                     } else {
-                        dayTextClass = "text-color-stext text-[20px]";
+                        dayTextClass = "text-color-stext text-[28px]";
                     }
 
                     return (
