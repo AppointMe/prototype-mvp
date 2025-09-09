@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router'
-import { pb } from '@/lib/pocketbase.js'
+import React, {useState, useEffect} from 'react'
+import {useNavigate} from 'react-router'
+import {pb} from '@/lib/pocketbase.js'
 
 const POCKETBASE_ENDPOINT = import.meta.env.VITE_POCKETBASE_URL
 
@@ -22,10 +22,46 @@ export default function Login() {
         e.preventDefault()
         setLoading(true)
         setError('')
-        const userData = { name, email }
+        const userData = {name, email}
+
+        // Search for existing user (email)
+        const existingUsers = await pb.collection('login').getFullList(200, {
+            filter: `email="${email}"`,
+        })
+
+        if (existingUsers.length > 0) {
+            // User exists, proceed to login
+            userData.name = existingUsers[0].name
+            userData.id = existingUsers[0].id
+
+            localStorage.setItem('user', JSON.stringify(userData))
+
+            setLoading(false)
+            navigate('/home')
+            return
+        }
+
+        // await pb.collection('login').create(userData)
+        const result = await pb.collection('login').create(userData).then(
+            (record) => {
+                console.log('Record created:', record)
+                return record
+            },
+            (error) => {
+                console.error('Error creating record:', error)
+                setError('Failed to login. Please try again.')
+                setLoading(false)
+                return null
+            }
+        ).catch(error => console.log(error))
+
+        if (!result) return
+
+        userData.id = result.id
         localStorage.setItem('user', JSON.stringify(userData))
 
-        await pb.collection('login').create(userData)
+        // print result
+        console.log(localStorage.getItem('user'))
 
         setLoading(false)
         navigate('/home')
