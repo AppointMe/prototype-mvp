@@ -29,7 +29,7 @@ export default function PastAppointments({ appointments = [] }) {
                 CITAS RECIENTES
             </h2>
 
-            <ul className="flex flex-row overflow-x-auto">
+            <ul className="flex flex-col items-center md:flex-row overflow-x-auto">
                 {appointments.map((appointment) => {
                     const date = new Date(appointment.schedule);
                     const formattedDate = date.toLocaleDateString("es-ES", {
