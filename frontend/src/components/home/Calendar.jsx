@@ -141,9 +141,9 @@ export default function Calendar({appointments = []}) {
                     // Estilos de color y tamaño según condición
                     let dayTextClass = "";
                     if (isCurrentWeek) {
-                        dayTextClass = "text-color-text text-[32px]";
+                        dayTextClass = "text-[var(--color-text)] text-[32px]";
                     } else {
-                        dayTextClass = "text-color-stext text-[28px]";
+                        dayTextClass = "text-[var(--color-stext)] text-[28px]";
                     }
 
                     return (
