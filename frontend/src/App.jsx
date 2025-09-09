@@ -3,6 +3,7 @@ import Login from "./pages/Login.jsx";
 import Home from "./pages/Home.jsx";
 import Layout from "./pages/Layout.jsx";
 import Explore from "./pages/Explore.jsx";
+import ExploreResult from "./pages/Explore_result.jsx";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Route element={<Layout />}>
         <Route path="/home" element={<Home />} />
         <Route path="/explore" element={<Explore />} />
+        <Route path="/explore_result" element={<ExploreResult />} />
         {/* <Route path="/appointments" element={<Appointments />} /> */}
       </Route>
     </Routes>

@@ -1,10 +1,37 @@
 // src/pages/Explore.jsx
 import React, {useState} from "react";
+import { useNavigate } from "react-router-dom";
+import { pb } from "@/lib/pocketbase.js";
 import SearchBar from "../components/explore/searchbar";
 import CategoriesCarousel from "../components/explore/CategoriesCarousel";
 
 export default function Explore() {
   const [selectedCategory, setSelectedCategory] = useState(null);
+
+  const navigate = useNavigate();
+
+  const handleSelectCategory = async (cat) => {
+  try {
+    const safe = cat.replace(/"/g, '\\"');
+
+    // 👇 importantísimo: ?= para "array CONTAINS"
+    const services = await pb.collection("services").getFullList(500, {
+      filter: `category ~ "${safe}"`,
+      sort: "-created",
+    });
+
+
+    if (!services.length) {
+      alert(`No se encontraron servicios para "${cat}".`);
+      return;
+    }
+
+    navigate("/explore_result", { state: { category: cat, services } });
+  } catch (e) {
+    console.error("❌ error:", e);
+    alert("Error al cargar servicios. Revisa consola.");
+  }
+};
 
   const handleSearch = (data) => {
     console.log("📌 Datos de búsqueda recibidos:", data);
@@ -18,7 +45,7 @@ export default function Explore() {
       {/* Carrusel de rubros (debajo del buscador) */}
       <CategoriesCarousel
         selected={selectedCategory}
-        onSelect={setSelectedCategory}
+        onSelect={handleSelectCategory}
       />
 
       {/* Título / placeholder debajo */}
