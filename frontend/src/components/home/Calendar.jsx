@@ -1,7 +1,20 @@
-import React, {useState} from "react";
+import React, { useState, useEffect } from "react";
 
-export default function Calendar({appointments = []}) {
-    // Helper para obtener el rango de la semana actual
+export default function Calendar({ appointments = [] }) {
+    const today = new Date();
+    const [currentMonth, setCurrentMonth] = useState(today.getMonth());
+    const [currentYear, setCurrentYear] = useState(today.getFullYear());
+    const [isMobile, setIsMobile] = useState(false);
+
+    // Detectar viewport para alternar entre semana y mes
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth < 768);
+        handleResize();
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
+    // Helper para rango de la semana actual
     function getCurrentWeekRange(date) {
         const dayOfWeek = date.getDay(); // 0 (domingo) - 6 (sábado)
         const start = new Date(date);
@@ -11,10 +24,6 @@ export default function Calendar({appointments = []}) {
         return [start, end];
     }
 
-    const today = new Date();
-    const [currentMonth, setCurrentMonth] = useState(today.getMonth());
-    const [currentYear, setCurrentYear] = useState(today.getFullYear());
-
     // Número de días en el mes
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
     const firstDay = new Date(currentYear, currentMonth, 1).getDay(); // 0 = domingo
@@ -22,7 +31,6 @@ export default function Calendar({appointments = []}) {
     // Número de días en el mes anterior y siguiente
     const prevMonthDate = new Date(currentYear, currentMonth, 0);
     const prevMonthDays = prevMonthDate.getDate();
-    const nextMonthDate = new Date(currentYear, currentMonth + 1, 1);
 
     // Agrupar citas por día
     const appointmentsByDay = appointments.reduce((acc, app) => {
@@ -104,122 +112,179 @@ export default function Calendar({appointments = []}) {
         });
     }
 
+    // Función auxiliar para obtener semana actual (7 días)
+    function getCurrentWeek(date) {
+        const start = new Date(date);
+        start.setDate(date.getDate() - date.getDay());
+        return Array.from({ length: 7 }).map((_, i) => {
+            const d = new Date(start);
+            d.setDate(start.getDate() + i);
+            return d;
+        });
+    }
+
+    const currentWeek = getCurrentWeek(today);
+
     return (
         <div className="bg-white rounded-2xl shadow-md p-4 w-full flex-1 h-full flex flex-col">
             {/* Header calendario */}
             <div className="flex justify-between items-center mb-4">
-                <button
-                    onClick={prevMonth}
-                    className="px-2 py-1 rounded-lg hover:bg-gray-100 text-3xl"
-                >
-                    {"<"}
-                </button>
+                {!isMobile && (
+                    <button
+                        onClick={prevMonth}
+                        className="px-2 py-1 rounded-lg hover:bg-gray-100 text-3xl"
+                    >
+                        {"<"}
+                    </button>
+                )}
+
                 <h2 className="font-semibold text-lg">
                     {monthNames[currentMonth]}, {currentYear}
                 </h2>
-                <button
-                    onClick={nextMonth}
-                    className="px-2 py-1 rounded-lg hover:bg-gray-100 text-3xl"
-                >
-                    {">"}
-                </button>
+
+                {!isMobile && (
+                    <button
+                        onClick={nextMonth}
+                        className="px-2 py-1 rounded-lg hover:bg-gray-100 text-3xl"
+                    >
+                        {">"}
+                    </button>
+                )}
             </div>
 
-            {/* Encabezados de semana */}
-            <div className="grid grid-cols-7 text-center font-medium px-8">
-                {weekDays.map((day, idx) => {
-                    // Determinar si este header es el día actual
-                    const isTodayHeader = today.getDay() === idx;
-                    return (
-                        <div
-                            key={day}
-                            className={`py-1 ${isTodayHeader ? "text-[var(--color-primary)] font-semibold" : "text-[var(--color-stext)]"}`}
-                        >
-                            {day}
-                        </div>
-                    );
-                })}
-            </div>
+            {/* Vista Semana (mobile) */}
+            {isMobile ? (
+                <div className="flex justify-between text-center">
+                    {currentWeek.map((day, idx) => {
+                        const isToday =
+                            day.getDate() === today.getDate() &&
+                            day.getMonth() === today.getMonth();
 
-            {/* Línea separadora */}
-            <div className="border-b border border-[var(--color-secondary)] my-4 mx-4" />
-
-            {/* Días */}
-            <div className="grid grid-cols-7 grid-rows-6 gap-1 flex-1 h-full min-h-0 px-8">
-                {days.map((cell, idx) => {
-                    if (cell.type !== "current") {
-                        // Días de otros meses
                         return (
                             <div
-                                key={`other-${idx}`}
-                                className="flex flex-col items-center justify-start p-1 h-full min-h-0"
+                                key={idx}
+                                className="flex flex-col items-center justify-center"
                             >
-                                <span className="flex items-center justify-center w-8 h-8 rounded-full text-[var(--color-border)] text-[28px] font-medium cursor-default">
-                                    {cell.day}
+                                <span
+                                    className={`text-xs ${
+                                        isToday
+                                            ? "text-purple-600 font-bold"
+                                            : "text-gray-500"
+                                    }`}
+                                >
+                                    {weekDays[idx]}
+                                </span>
+                                <span
+                                    className={`w-8 h-8 flex items-center justify-center rounded-full ${
+                                        isToday
+                                            ? "bg-purple-100 text-purple-700 font-bold"
+                                            : "text-gray-800"
+                                    }`}
+                                >
+                                    {day.getDate()}
                                 </span>
                             </div>
                         );
-                    }
+                    })}
+                </div>
+            ) : (
+                <>
+                    {/* Encabezados de semana */}
+                    <div className="grid grid-cols-7 text-center font-medium px-8">
+                        {weekDays.map((day, idx) => {
+                            const isTodayHeader = today.getDay() === idx;
+                            return (
+                                <div
+                                    key={day}
+                                    className={`py-1 ${
+                                        isTodayHeader
+                                            ? "text-[var(--color-primary)] font-semibold"
+                                            : "text-[var(--color-stext)]"
+                                    }`}
+                                >
+                                    {day}
+                                </div>
+                            );
+                        })}
+                    </div>
 
-                    // Días del mes actual
-                    const day = cell.day;
-                    const dayAppointments = appointmentsByDay[day] || [];
+                    {/* Línea separadora */}
+                    <div className="border-b border border-[var(--color-secondary)] my-4 mx-4" />
 
-                    const isToday =
-                        day === today.getDate() &&
-                        currentMonth === today.getMonth() &&
-                        currentYear === today.getFullYear();
+                    {/* Días del mes */}
+                    <div className="grid grid-cols-7 grid-rows-6 gap-1 flex-1 h-full min-h-0 px-8">
+                        {days.map((cell, idx) => {
+                            if (cell.type !== "current") {
+                                return (
+                                    <div
+                                        key={`other-${idx}`}
+                                        className="flex flex-col items-center justify-start p-1 h-full min-h-0"
+                                    >
+                                        <span className="flex items-center justify-center w-8 h-8 rounded-full text-[var(--color-border)] text-[28px] font-medium cursor-default">
+                                            {cell.day}
+                                        </span>
+                                    </div>
+                                );
+                            }
 
-                    // Determinar si el día está en la semana current
-                    let isCurrentWeek = false;
-                    if (currentWeekRange) {
-                        const date = new Date(currentYear, currentMonth, day);
-                        isCurrentWeek =
-                            date >= currentWeekRange[0] && date <= currentWeekRange[1];
-                    }
+                            const day = cell.day;
+                            const dayAppointments = appointmentsByDay[day] || [];
 
-                    // Estilos de color y tamaño según condición
-                    let dayTextClass = "";
-                    if (isCurrentWeek) {
-                        dayTextClass = "text-[var(--color-text)] text-[32px]";
-                    } else {
-                        dayTextClass = "text-[var(--color-stext)] text-[28px]";
-                    }
+                            const isToday =
+                                day === today.getDate() &&
+                                currentMonth === today.getMonth() &&
+                                currentYear === today.getFullYear();
 
-                    return (
-                        <div
-                            key={day}
-                            className="flex flex-col items-center justify-start p-1 h-full min-h-0 cursor-pointer hover:bg-gray-100 rounded-lg"
-                        >
-                            <span
-                                className={`flex items-center justify-center w-8 h-8 rounded-full ${
-                                    isToday
-                                        ? "bg-purple-100 text-purple-700 font-bold"
-                                        : "font-medium"
-                                } ${dayTextClass}`}
-                            >
-                                {day}
-                            </span>
+                            let isCurrentWeek = false;
+                            if (currentWeekRange) {
+                                const date = new Date(currentYear, currentMonth, day);
+                                isCurrentWeek =
+                                    date >= currentWeekRange[0] && date <= currentWeekRange[1];
+                            }
 
-                            {/* Puntos de citas */}
-                            <div className="flex space-x-0.5 mt-1">
-                                {dayAppointments.slice(0, 4).map((app, i) => (
+                            let dayTextClass = "";
+                            if (isCurrentWeek) {
+                                dayTextClass = "text-[var(--color-text)] text-[32px]";
+                            } else {
+                                dayTextClass = "text-[var(--color-stext)] text-[28px]";
+                            }
+
+                            return (
+                                <div
+                                    key={day}
+                                    className="flex flex-col items-center justify-start p-1 h-full min-h-0 cursor-pointer hover:bg-gray-100 rounded-lg"
+                                >
                                     <span
-                                        key={i}
-                                        className="w-1.5 h-1.5 bg-purple-600 rounded-full"
-                                        title={`${app.serviceTitle} - ${app.serviceBusiness}`}
-                                    />
-                                ))}
-                                {dayAppointments.length > 4 && (
-                                    <span className="text-xs text-purple-600 font-bold">
-                                        +
+                                        className={`flex items-center justify-center w-8 h-8 rounded-full ${
+                                            isToday
+                                                ? "bg-purple-100 text-purple-700 font-bold"
+                                                : "font-medium"
+                                        } ${dayTextClass}`}
+                                    >
+                                        {day}
                                     </span>
-                                )}
-                            </div>
-                        </div>
-                    );
-                })}
-            </div>
+
+                                    {/* Puntos de citas */}
+                                    <div className="flex space-x-0.5 mt-1">
+                                        {dayAppointments.slice(0, 4).map((app, i) => (
+                                            <span
+                                                key={i}
+                                                className="w-1.5 h-1.5 bg-purple-600 rounded-full"
+                                                title={`${app.serviceTitle} - ${app.serviceBusiness}`}
+                                            />
+                                        ))}
+                                        {dayAppointments.length > 4 && (
+                                            <span className="text-xs text-purple-600 font-bold">
+                                                +
+                                            </span>
+                                        )}
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </>
+            )}
         </div>
     );
 }

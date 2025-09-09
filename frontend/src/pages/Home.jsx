@@ -17,7 +17,7 @@ export default function Home() {
             .getFullList(200, {
                 filter: `customer="${user.id}"`,
                 sort: "schedule",
-                expand: "service", // 👈 asegúrate que venga con los datos del servicio
+                expand: "service",
             })
             .then((records) => setAppointments(records))
             .catch((err) => console.error("Error cargando citas:", err));
@@ -25,29 +25,25 @@ export default function Home() {
 
     const now = new Date();
 
-    // Citas pasadas: fecha < hoy
     const pastAppointments = appointments.filter(
         (app) => new Date(app.schedule) < now
     );
-
-    // Citas futuras: fecha >= hoy
     const upcomingAppointments = appointments.filter(
         (app) => new Date(app.schedule) >= now
     );
 
     return (
-        <div className="flex flex-col w-full h-full">
-            
-            {/* Contenido principal */}
-            <div className="flex flex-row justify-between items-stretch w-full p-4 gap-6 h-full">
-                {/* Calendar → todas */}
+        <div className="flex flex-col w-full h-full p-4 gap-6">
+            {/* Layout responsive */}
+            <div className="flex flex-col lg:flex-row lg:items-stretch gap-6 items-center">
+                {/* Calendar: todas */}
                 <Calendar appointments={appointments} />
 
-                {/* Upcoming → solo futuras */}
+                {/* Upcoming: futuras */}
                 <Upcoming appointments={upcomingAppointments} />
             </div>
 
-            {/* Past → solo pasadas */}
+            {/* Past: pasadas */}
             <PastAppointments appointments={pastAppointments} />
         </div>
     );
