@@ -19,6 +19,11 @@ export default function Calendar({appointments = []}) {
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
     const firstDay = new Date(currentYear, currentMonth, 1).getDay(); // 0 = domingo
 
+    // Número de días en el mes anterior y siguiente
+    const prevMonthDate = new Date(currentYear, currentMonth, 0);
+    const prevMonthDays = prevMonthDate.getDate();
+    const nextMonthDate = new Date(currentYear, currentMonth + 1, 1);
+
     // Agrupar citas por día
     const appointmentsByDay = appointments.reduce((acc, app) => {
         const date = new Date(app.schedule);
@@ -70,6 +75,35 @@ export default function Calendar({appointments = []}) {
         currentWeekRange = getCurrentWeekRange(today);
     }
 
+    // Calcular celdas para el calendario (6 filas de 7 días = 42)
+    const totalCells = 42;
+    const days = [];
+
+    // Días del mes anterior
+    for (let i = firstDay - 1; i >= 0; i--) {
+        days.push({
+            day: prevMonthDays - i,
+            type: "prev",
+        });
+    }
+
+    // Días del mes actual
+    for (let i = 1; i <= daysInMonth; i++) {
+        days.push({
+            day: i,
+            type: "current",
+        });
+    }
+
+    // Días del mes siguiente
+    const nextDays = totalCells - days.length;
+    for (let i = 1; i <= nextDays; i++) {
+        days.push({
+            day: i,
+            type: "next",
+        });
+    }
+
     return (
         <div className="bg-white rounded-2xl shadow-md p-4 w-full flex-1 h-full flex flex-col">
             {/* Header calendario */}
@@ -112,17 +146,23 @@ export default function Calendar({appointments = []}) {
 
             {/* Días */}
             <div className="grid grid-cols-7 grid-rows-6 gap-1 flex-1 h-full min-h-0 px-8">
-                {/* Espacios vacíos antes del primer día */}
-                {Array.from({length: firstDay}).map((_, i) => (
-                    <div
-                        key={`empty-${i}`}
-                        className="py-4 text-color-border"
-                    />
-                ))}
+                {days.map((cell, idx) => {
+                    if (cell.type !== "current") {
+                        // Días de otros meses
+                        return (
+                            <div
+                                key={`other-${idx}`}
+                                className="flex flex-col items-center justify-start p-1 h-full min-h-0"
+                            >
+                                <span className="flex items-center justify-center w-8 h-8 rounded-full text-[var(--color-border)] text-[28px] font-medium cursor-default">
+                                    {cell.day}
+                                </span>
+                            </div>
+                        );
+                    }
 
-                {/* Días del mes */}
-                {Array.from({length: daysInMonth}).map((_, dayIndex) => {
-                    const day = dayIndex + 1;
+                    // Días del mes actual
+                    const day = cell.day;
                     const dayAppointments = appointmentsByDay[day] || [];
 
                     const isToday =
@@ -141,9 +181,9 @@ export default function Calendar({appointments = []}) {
                     // Estilos de color y tamaño según condición
                     let dayTextClass = "";
                     if (isCurrentWeek) {
-                        dayTextClass = "text-color-text text-[32px]";
+                        dayTextClass = "text-[var(--color-text)] text-[32px]";
                     } else {
-                        dayTextClass = "text-color-stext text-[28px]";
+                        dayTextClass = "text-[var(--color-stext)] text-[28px]";
                     }
 
                     return (

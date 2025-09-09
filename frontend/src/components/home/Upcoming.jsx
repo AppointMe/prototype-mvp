@@ -18,7 +18,7 @@ export default function Upcoming({appointments = []}) {
                     {appointments.map((app) => (
                         <li
                             key={app.id}
-                            className="p-3 rounded-xl bg-[#FBFBFB] hover:bg-gray-100 transition"
+                            className="p-3 rounded-xl hover:bg-gray-100 transition cursor-default"
                         >
                             <div className="font-medium text-gray-800">
                                 {(() => {
