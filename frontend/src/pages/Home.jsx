@@ -35,7 +35,7 @@ export default function Home() {
     return (
         <div className="flex flex-col w-full h-full p-4 gap-6">
             {/* Layout responsive */}
-            <div className="flex flex-col lg:flex-row md:items-stretch gap-6">
+            <div className="flex flex-col lg:flex-row lg:items-stretch gap-6 items-center">
                 {/* Calendar: todas */}
                 <Calendar appointments={appointments} />
 

@@ -17,19 +17,16 @@ export default function PastAppointments({ appointments = [] }) {
         );
     }
 
-    console.log(appointments);
-
     return (
         <div className="bg-white rounded-2xl shadow-md p-4 w-full">
-            <h2 className="text-lg mb-4 rounded-2xl bg-[var(--color-primary)] text-white inline-block px-8 py-1"
-            style={
-                { fontFamily: 'var(--font-heading)'}
-            }
+            <h2
+                className="text-lg mb-4 rounded-2xl bg-[var(--color-primary)] text-white inline-block px-8 py-1"
+                style={{ fontFamily: "var(--font-heading)" }}
             >
                 CITAS RECIENTES
             </h2>
 
-            <ul className="flex flex-col items-center md:flex-row overflow-x-auto">
+            <ul className="flex flex-col items-center gap-4 lg:flex-row lg:flex-wrap">
                 {appointments.map((appointment) => {
                     const date = new Date(appointment.schedule);
                     const formattedDate = date.toLocaleDateString("es-ES", {
@@ -45,17 +42,16 @@ export default function PastAppointments({ appointments = [] }) {
                     return (
                         <li
                             key={appointment.id}
-                            className="flex flex-row items-center flex-1 min-w-[180px] max-w-xs mr-4 last:mr-0 bg-white rounded-xl p-4 border-[var(--color-border)] transition"
-                            style={{ borderWidth: '0.5px' }}
+                            className="flex flex-row items-center w-full max-w-lg lg:min-w-[200px] lg:max-w-xs bg-white rounded-xl p-4 border border-[var(--color-border)] transition"
                         >
                             {imgUrl ? (
                                 <img
                                     src={imgUrl}
                                     alt={appointment.expand.service.title}
-                                    className="w-22 h-22 rounded-full object-cover border border-gray-200 mb-2"
+                                    className="w-16 h-16 rounded-full object-cover border border-gray-200"
                                 />
                             ) : (
-                                <div className="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center text-gray-400 mb-2">
+                                <div className="w-16 h-16 rounded-xl bg-gray-100 flex items-center justify-center text-gray-400">
                                     📌
                                 </div>
                             )}
@@ -69,7 +65,9 @@ export default function PastAppointments({ appointments = [] }) {
                                 </p>
                                 <button
                                     className="mt-2 text-xs border px-2 py-1 rounded-lg text-[var(--color-primary)] border-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-[var(--color-accent)] transition"
-                                    onClick={() => alert('Funcionalidad de calificación no implementada.')}
+                                    onClick={() =>
+                                        alert("Funcionalidad de calificación no implementada.")
+                                    }
                                 >
                                     Calificar Servicio
                                 </button>

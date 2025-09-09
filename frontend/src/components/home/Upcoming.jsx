@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Upcoming({appointments = []}) {
     return (
-        <div className="bg-white rounded-2xl shadow-md p-4 w-full max-w-md">
+        <div className="bg-white rounded-2xl shadow-md p-4 w-full lg:max-w-md">
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-semibold">Próximas Citas</h2>
                 <button
