@@ -36,21 +36,19 @@ export default function Home() {
     );
 
     return (
-        <div className="flex flex-col w-full h-screen">
+        <div className="flex flex-col w-full h-full">
             
             {/* Contenido principal */}
-            <div className="flex flex-col items-center w-full flex-1">
-                <div className="flex flex-row justify-between items-stretch w-full p-4 gap-6 h-full">
-                    {/* Calendar → todas */}
-                    <Calendar appointments={appointments} />
+            <div className="flex flex-row justify-between items-stretch w-full p-4 gap-6 h-full">
+                {/* Calendar → todas */}
+                <Calendar appointments={appointments} />
 
-                    {/* Upcoming → solo futuras */}
-                    <Upcoming appointments={upcomingAppointments} />
-                </div>
-
-                {/* Past → solo pasadas */}
-                <PastAppointments appointments={pastAppointments} />
+                {/* Upcoming → solo futuras */}
+                <Upcoming appointments={upcomingAppointments} />
             </div>
+
+            {/* Past → solo pasadas */}
+            <PastAppointments appointments={pastAppointments} />
         </div>
     );
 }

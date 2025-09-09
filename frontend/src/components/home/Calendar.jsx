@@ -1,6 +1,16 @@
 import React, {useState} from "react";
 
 export default function Calendar({appointments = []}) {
+    // Helper para obtener el rango de la semana actual
+    function getCurrentWeekRange(date) {
+        const dayOfWeek = date.getDay(); // 0 (domingo) - 6 (sábado)
+        const start = new Date(date);
+        start.setDate(date.getDate() - dayOfWeek);
+        const end = new Date(date);
+        end.setDate(date.getDate() + (6 - dayOfWeek));
+        return [start, end];
+    }
+
     const today = new Date();
     const [currentMonth, setCurrentMonth] = useState(today.getMonth());
     const [currentYear, setCurrentYear] = useState(today.getFullYear());
@@ -31,7 +41,7 @@ export default function Calendar({appointments = []}) {
         "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
         "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
     ];
-    const weekDays = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
+    const weekDays = ["DOM", "LUN", "MAR", "MIE", "JUE", "VIE", "SAB"];
 
     const prevMonth = () => {
         if (currentMonth === 0) {
@@ -51,41 +61,63 @@ export default function Calendar({appointments = []}) {
         }
     };
 
+    // Calcular rango de la semana actual (solo si el mes/año coincide)
+    let currentWeekRange = null;
+    if (
+        currentMonth === today.getMonth() &&
+        currentYear === today.getFullYear()
+    ) {
+        currentWeekRange = getCurrentWeekRange(today);
+    }
+
     return (
         <div className="bg-white rounded-2xl shadow-md p-4 w-full flex-1 h-full flex flex-col">
             {/* Header calendario */}
             <div className="flex justify-between items-center mb-4">
                 <button
                     onClick={prevMonth}
-                    className="px-2 py-1 rounded-lg hover:bg-gray-100"
+                    className="px-2 py-1 rounded-lg hover:bg-gray-100 text-3xl"
                 >
-                    ◀
+                    {"<"}
                 </button>
                 <h2 className="font-semibold text-lg">
                     {monthNames[currentMonth]}, {currentYear}
                 </h2>
                 <button
                     onClick={nextMonth}
-                    className="px-2 py-1 rounded-lg hover:bg-gray-100"
+                    className="px-2 py-1 rounded-lg hover:bg-gray-100 text-3xl"
                 >
-                    ▶
+                    {">"}
                 </button>
             </div>
 
             {/* Encabezados de semana */}
-            <div className="grid grid-cols-7 text-center font-medium text-gray-600">
-                {weekDays.map((day) => (
-                    <div key={day} className="py-1">
-                        {day}
-                    </div>
-                ))}
+            <div className="grid grid-cols-7 text-center font-medium px-8">
+                {weekDays.map((day, idx) => {
+                    // Determinar si este header es el día actual
+                    const isTodayHeader = today.getDay() === idx;
+                    return (
+                        <div
+                            key={day}
+                            className={`py-1 ${isTodayHeader ? "text-[var(--color-primary)] font-semibold" : "text-[var(--color-stext)]"}`}
+                        >
+                            {day}
+                        </div>
+                    );
+                })}
             </div>
 
+            {/* Línea separadora */}
+            <div className="border-b border border-[var(--color-secondary)] my-4 mx-4" />
+
             {/* Días */}
-            <div className="grid grid-cols-7 grid-rows-6 gap-1 flex-1 h-full min-h-0">
+            <div className="grid grid-cols-7 grid-rows-6 gap-1 flex-1 h-full min-h-0 px-8">
                 {/* Espacios vacíos antes del primer día */}
                 {Array.from({length: firstDay}).map((_, i) => (
-                    <div key={`empty-${i}`} className="py-4"/>
+                    <div
+                        key={`empty-${i}`}
+                        className="py-4 text-color-border"
+                    />
                 ))}
 
                 {/* Días del mes */}
@@ -98,6 +130,22 @@ export default function Calendar({appointments = []}) {
                         currentMonth === today.getMonth() &&
                         currentYear === today.getFullYear();
 
+                    // Determinar si el día está en la semana current
+                    let isCurrentWeek = false;
+                    if (currentWeekRange) {
+                        const date = new Date(currentYear, currentMonth, day);
+                        isCurrentWeek =
+                            date >= currentWeekRange[0] && date <= currentWeekRange[1];
+                    }
+
+                    // Estilos de color y tamaño según condición
+                    let dayTextClass = "";
+                    if (isCurrentWeek) {
+                        dayTextClass = "text-color-text text-[32px]";
+                    } else {
+                        dayTextClass = "text-color-stext text-[28px]";
+                    }
+
                     return (
                         <div
                             key={day}
@@ -107,8 +155,8 @@ export default function Calendar({appointments = []}) {
                                 className={`flex items-center justify-center w-8 h-8 rounded-full ${
                                     isToday
                                         ? "bg-purple-100 text-purple-700 font-bold"
-                                        : "text-gray-800"
-                                }`}
+                                        : "font-medium"
+                                } ${dayTextClass}`}
                             >
                                 {day}
                             </span>

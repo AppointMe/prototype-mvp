@@ -9,7 +9,7 @@ export default function Layout() {
       <Navbar />
 
       {/* Aquí se renderizan las páginas */}
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto mt-2 mb-2">
         <Outlet />
       </div>
     </div>
