@@ -21,6 +21,18 @@ export default function CategoriesCarousel({ selected, onSelect }) {
                     fields: "category", // solo necesitamos category
                 });
                 if (!mounted) return;
+
+                // capitaliza la primera letra de cada categoría
+                data.forEach(s => {
+                    if (s.category) {
+                        if (Array.isArray(s.category)) {
+                            s.category = s.category.map(c => c.charAt(0).toUpperCase() + c.slice(1));
+                        } else if (typeof s.category === 'string') {
+                            s.category = s.category.charAt(0).toUpperCase() + s.category.slice(1);
+                        }
+                    }
+                });
+
                 setServices(data || []);
             } catch (e) {
                 console.error("Error cargando servicios:", e);
