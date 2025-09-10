@@ -65,7 +65,7 @@ export default function ServicesCarousel({
             </div>
             <div
                 ref={scrollRef}
-                className="flex gap-4 overflow-x-auto scrollbar-hide pb-2"
+                className="flex gap-4 overflow-x-auto pb-2 hide-scrollbar"
                 style={{ scrollBehavior: "smooth" }}
             >
                 {services.map((service) => (

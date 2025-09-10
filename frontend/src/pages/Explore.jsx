@@ -54,7 +54,8 @@ export default function Explore() {
         const shuffledServices = shuffleArray(services);
         const numServices = Math.floor(shuffledServices.length / 3);
 
-        const ofertas = shuffledServices.slice(0, numServices);
+        // para ofertas obtner todos los que tengan discount > 0.
+        const ofertas = shuffledServices.filter(s => s.discount > 0).slice(0, numServices);
         const populares = shuffledServices.slice(numServices, numServices * 2);
         const empresas = shuffledServices.slice(numServices * 2, numServices * 3);
 
