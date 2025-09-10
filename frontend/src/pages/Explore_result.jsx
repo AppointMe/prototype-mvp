@@ -70,7 +70,7 @@ export default function ExploreResult() {
                 <div
                     className={
                         selected
-                            ? "w-full lg:w-1/2"
+                            ? "w-full lg:w-1/2" + " hidden md:block"
                             : "w-full"
                     }
                 >

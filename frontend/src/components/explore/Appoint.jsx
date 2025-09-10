@@ -95,7 +95,7 @@ export default function Appoint({service, onCancel}) {
     };
 
     return (
-        <div className="w-full bg-white rounded-2xl shadow p-6 flex flex-col gap-6">
+        <div className="w-full bg-white rounded-2xl shadow md:p-6 flex flex-col gap-6">
             {/* Encabezado */}
             <div className="flex justify-between items-center">
                 <h2 className="text-lg font-semibold text-gray-900">{name}</h2>
@@ -145,9 +145,9 @@ export default function Appoint({service, onCancel}) {
                 </h3>
 
                 <div className="flex justify-between text-sm mb-3">
-          <span className="text-gray-600">
-            {quantity} x {name}
-          </span>
+                    <span className="text-gray-600">
+                    {quantity} x {name}
+                    </span>
                     <span className="font-semibold">Q {total}</span>
                 </div>
 
@@ -169,28 +169,31 @@ export default function Appoint({service, onCancel}) {
                     />
                 </div>
 
-                {/* Hora de inicio */}
-                <div className="flex items-center gap-2 text-sm mb-3">
-                    <Clock className="w-4 h-4 text-gray-500"/>
-                    <span>Inicio:</span>
-                    <input
-                        type="time"
-                        value={startTime}
-                        onChange={(e) => setStartTime(e.target.value)}
-                        className="border rounded px-2 py-1 w-full"
-                    />
-                </div>
+                {/*Horas*/}
+                <div className="flex flex-col md:flex-row gap-4 my-6 items-start md:items-center">
+                    {/* Hora de inicio */}
+                    <div className="flex items-center gap-2 text-sm">
+                        <Clock className="w-4 h-4 text-gray-500"/>
+                        <span>Inicio:</span>
+                        <input
+                            type="time"
+                            value={startTime}
+                            onChange={(e) => setStartTime(e.target.value)}
+                            className="border rounded px-2 py-1 w-full"
+                        />
+                    </div>
 
-                {/* Hora de fin */}
-                <div className="flex items-center gap-2 text-sm mb-3">
-                    <Clock className="w-4 h-4 text-gray-500"/>
-                    <span>Fin:</span>
-                    <input
-                        type="time"
-                        value={endTime}
-                        onChange={(e) => setEndTime(e.target.value)}
-                        className="border rounded px-2 py-1 w-full"
-                    />
+                    {/* Hora de fin */}
+                    <div className="flex items-center gap-2 text-sm">
+                        <Clock className="w-4 h-4 text-gray-500"/>
+                        <span>Fin:</span>
+                        <input
+                            type="time"
+                            value={endTime}
+                            onChange={(e) => setEndTime(e.target.value)}
+                            className="border rounded px-2 py-1 w-full"
+                        />
+                    </div>
                 </div>
 
                 <textarea

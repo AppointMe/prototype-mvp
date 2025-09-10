@@ -153,16 +153,6 @@ export default function Explore() {
         onSelect={handleSelectCategory}
       />
 
-      {/* Título / placeholder debajo */}
-      <h1 className="md:block hidden text-2xl font-bold mt-8" style={{ color: "#311B92" }}>
-        {selectedCategory ? `Servicios: ${selectedCategory}` : "Explorar Servicios"}
-      </h1>
-      <p className="md:block hidden text-gray-600 text-base text-center mt-2">
-        {selectedCategory
-          ? "Mostrando resultados para el rubro seleccionado."
-          : "Selecciona un rubro para explorar servicios disponibles."}
-      </p>
-
       {/* Carruseles de servicios */}
       <ServicesCarousel
         title="Ofertas Semanales"
