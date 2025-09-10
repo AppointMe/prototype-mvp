@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
-import { pb } from "../lib/pocketbase.js";
+import { pb } from "@/lib/pocketbase.js";
 import BusinessCard from "../components/explore/BusinessCard.jsx";
 
 const pocketbaseUrl = import.meta.env.VITE_POCKETBASE_URL;
