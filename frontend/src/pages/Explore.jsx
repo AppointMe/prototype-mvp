@@ -1,14 +1,83 @@
 // src/pages/Explore.jsx
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import { pb } from "@/lib/pocketbase.js";
 import SearchBar from "../components/explore/searchbar";
 import CategoriesCarousel from "../components/explore/CategoriesCarousel";
 
+import ServiceCard from "../components/explore/ServiceCard";
+import ServicesCarousel from "../components/explore/ServicesCarousel";
+
+
 export default function Explore() {
   const [selectedCategory, setSelectedCategory] = useState(null);
 
+  // services. 
+  const [allServices, setAllServices] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // services categories. 
+  const [ofertas_semanales, setOfertas_semanales] = useState([]);
+  const [servicios_populares, setServicios_populares] = useState([]);
+  const [empresas_populares, setEmpresas_populares] = useState([]);
+
   const navigate = useNavigate();
+
+  // use effect for services. 
+  useEffect(() => {
+    const loadAllServices = async () => {
+      try {
+        setLoading(true);
+        console.log("Iniciando carga de servicios...");
+        const services = await pb.collection("services").getFullList(500, {
+          sort: "-created",
+        });
+
+        setAllServices(services);
+        console.log(`✅ Cargados ${services.length} servicios.`);
+        console.log(services);
+
+        if (services.length > 0) {
+          console.log("🔍 Primer servicio:", services[0]);
+          console.log("🏷️ Campos disponibles:", Object.keys(services[0]));
+        }
+
+        // Cargar categorías específicas
+        // randomiza de allServices hacia ofertas_semanales, servicios_populares, empresas_populares. 
+        // que vaya el mismo numero a cada una. haz el calculo tomando la longitud de allServices.
+
+        // Mezclar los servicios y repartirlos en tres categorías iguales
+        const shuffleArray = (array) => {
+          return [...array].sort(() => Math.random() - 0.5); // copia para no mutar
+        };
+
+        const shuffledServices = shuffleArray(services);
+        const numServices = Math.floor(shuffledServices.length / 3);
+
+        const ofertas = shuffledServices.slice(0, numServices);
+        const populares = shuffledServices.slice(numServices, numServices * 2);
+        const empresas = shuffledServices.slice(numServices * 2, numServices * 3);
+
+        setOfertas_semanales(ofertas);
+        setServicios_populares(populares);
+        setEmpresas_populares(empresas);
+
+        console.log("Ofertas Semanales:", ofertas);
+        console.log("Servicios Populares:", populares);
+        console.log("Empresas Populares:", empresas);
+
+      } catch (e) {
+        console.error("❌ Error cargando servicios:", e);
+        alert("Error cargando servicios. Revisa consola.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadAllServices();
+  }, []);
+
+
+
 
   const handleSelectCategory = async (cat) => {
   try {
@@ -93,6 +162,24 @@ export default function Explore() {
           ? "Mostrando resultados para el rubro seleccionado."
           : "Selecciona un rubro para explorar servicios disponibles."}
       </p>
+
+      {/* Carruseles de servicios */}
+      <ServicesCarousel
+        title="Ofertas Semanales"
+        services={ofertas_semanales}
+        loading={loading}
+      />
+      <ServicesCarousel
+        title="Servicios Populares"
+        services={servicios_populares}
+        loading={loading}
+      />
+      <ServicesCarousel
+        title="Empresas Populares"
+        services={empresas_populares}
+        loading={loading}
+      />
+
     </div>
   );
 }
