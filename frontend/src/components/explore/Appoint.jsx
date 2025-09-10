@@ -66,7 +66,7 @@ export default function Appoint({service, onCancel}) {
     };
 
     return (
-        <div className="w-full bg-white rounded-2xl shadow md:p-6 flex flex-col gap-6">
+        <div className="w-full bg-white rounded-2xl shadow p-6 flex flex-col gap-6">
             {/* Encabezado */}
             <div className="flex justify-between items-center">
                 <h2 className="text-lg font-semibold text-gray-900">{name}</h2>

@@ -47,7 +47,7 @@ export default function ExploreResult() {
     }, [category, services.length]);
 
     return (
-        <div className="p-6">
+        <div className="md:p-6">
             {/* Header */}
             <h1 className="text-xl font-bold text-[var(--color-text)]">{category}</h1>
 
