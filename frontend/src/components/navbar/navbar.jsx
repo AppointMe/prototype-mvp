@@ -17,14 +17,18 @@ export default function Navbar() {
         navigate("/");
     };
 
+    const gotoHome = () => {
+        navigate("/home");
+    }
+
     return (
         <nav className="flex items-center justify-between px-6 py-3 shadow-sm bg-white relative">
             {/* Logo + título */}
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-3 cursor-pointer">
                 <img src={Logo} alt="AppointMe" className="h-10 w-auto"/>
-                <span className="font-bold text-xl md:text-2xl" style={{color: "#311B92"}}>
-          AppointMe
-        </span>
+                <span className="font-bold text-xl md:text-2xl" style={{color: "#311B92"}} onClick={gotoHome}>
+                    AppointMe
+                </span>
             </div>
 
             {/* Menú en pantallas grandes */}
