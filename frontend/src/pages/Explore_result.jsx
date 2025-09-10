@@ -93,6 +93,7 @@ export default function ExploreResult() {
                                         logo: getImageUrl(s) || null,
                                         id: s.id,
                                         business: s.business || null,
+                                        description: s.description || null,
                                     },
                                 ]}
                                 onViewAll={() => alert(`Ver todos los servicios de ${s.title}`)}

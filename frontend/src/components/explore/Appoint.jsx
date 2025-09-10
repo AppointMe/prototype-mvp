@@ -1,15 +1,22 @@
 // src/components/explore/Appoint.jsx
-import { useState } from "react";
-import { Calendar, Clock } from "lucide-react";
+import {useState} from "react";
+import {Calendar, Clock} from "lucide-react";
+import {useNavigate} from "react-router";
+import {pb} from "@/lib/pocketbase";
 
-export default function Appoint({ service, onCancel }) {
+export default function Appoint({service, onCancel}) {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const [date, setDate] = useState(tomorrow.toISOString().split("T")[0]);
     const [quantity, setQuantity] = useState(1);
-    const [date, setDate] = useState("2025-09-06");
     const [startTime, setStartTime] = useState("15:00");
     const [endTime, setEndTime] = useState("16:30");
     const [comments, setComments] = useState("");
 
+    const navigate = useNavigate();
+
     if (!service) return null;
+    console.log("Servicio en Appoint:", service);
 
     // --- Datos del servicio ---
     const name = service.name || "Servicio";
@@ -17,9 +24,7 @@ export default function Appoint({ service, onCancel }) {
     const business = service.business || "Negocio";
     const logo = service.logo || "https://placehold.co/64";
     const address = "Guatemala"; // Placeholder si no hay dirección
-    const description =
-        service.description ||
-        "Incluye corte, limpieza básica y aplicación de servicio estándar. El contenido puede variar según requerimientos.";
+    const description = service.description || "Descripción no disponible";
 
     // --- Cálculo duración dinámica ---
     function getDuration(start, end) {
@@ -38,14 +43,55 @@ export default function Appoint({ service, onCancel }) {
         return res.trim() || "0m";
     }
 
+    const durationToHours = (duration) => {
+        // del resultado de getDuration, obtener un número en horas (decimal)
+        // 1h 30m -> 1.5
+        const parts = duration.split(" ");
+        let hours = 0;
+        parts.forEach((part) => {
+            if (part.endsWith("h")) {
+                hours += parseInt(part) || 0;
+            } else if (part.endsWith("m")) {
+                hours += (parseInt(part) || 0) / 60;
+            }
+        });
+        return hours;
+
+    }
+
     const duration = getDuration(startTime, endTime);
 
     const total = quantity * (service.price || 0);
 
-    const handleAdd = () => {
-        alert(
-            `Agendado ${quantity} x ${name} en ${business} por Q${total}`
-        );
+    const handleAdd = async () => {
+        const customer = localStorage.getItem("user");
+        if (!customer) {
+            alert("No se encontró el usuario. Inicie sesión.");
+            return;
+        }
+
+        // Construir fecha y hora de inicio
+        const schedule = `${date}T${startTime}`;
+        const duration = getDuration(startTime, endTime);
+        const serviceId = service.id;
+        const scheduleDate = new Date(schedule);
+
+        try {
+            await pb.collection("appointments").create({
+                customer: JSON.parse(customer).id,
+                schedule: scheduleDate,
+                duration: durationToHours(duration),
+                service: serviceId,
+            });
+            if (onCancel) onCancel();
+
+            // Redirigir a "home"
+            navigate("/home");
+
+        } catch (e) {
+            alert("Error al agendar la cita");
+            console.error(e);
+        }
     };
 
     return (
@@ -53,21 +99,21 @@ export default function Appoint({ service, onCancel }) {
             {/* Encabezado */}
             <div className="flex justify-between items-center">
                 <h2 className="text-lg font-semibold text-gray-900">{name}</h2>
-                <div className="flex items-center gap-2">
-                    <button
-                        className="px-3 py-1 border rounded-full"
-                        onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                    >
-                        –
-                    </button>
-                    <span className="px-2">{quantity}</span>
-                    <button
-                        className="px-3 py-1 border rounded-full"
-                        onClick={() => setQuantity((q) => q + 1)}
-                    >
-                        +
-                    </button>
-                </div>
+                {/*<div className="flex items-center gap-2">*/}
+                {/*    <button*/}
+                {/*        className="px-3 py-1 border rounded-full"*/}
+                {/*        onClick={() => setQuantity((q) => Math.max(1, q - 1))}*/}
+                {/*    >*/}
+                {/*        –*/}
+                {/*    </button>*/}
+                {/*    <span className="px-2">{quantity}</span>*/}
+                {/*    <button*/}
+                {/*        className="px-3 py-1 border rounded-full"*/}
+                {/*        onClick={() => setQuantity((q) => q + 1)}*/}
+                {/*    >*/}
+                {/*        +*/}
+                {/*    </button>*/}
+                {/*</div>*/}
             </div>
 
             {/* Descripción */}
@@ -76,7 +122,7 @@ export default function Appoint({ service, onCancel }) {
             {/* Duración y precio unitario */}
             <div className="flex gap-4 text-sm">
                 <div className="flex items-center gap-1 px-3 py-1 rounded-full bg-[#F3F0FF] text-[#311B92] font-medium">
-                    <Clock className="w-4 h-4" />
+                    <Clock className="w-4 h-4"/>
                     {duration}
                 </div>
                 <div className="flex items-center gap-1 px-3 py-1 rounded-full bg-gray-100 text-gray-800 font-medium">
@@ -108,13 +154,13 @@ export default function Appoint({ service, onCancel }) {
                 <div className="mb-3">
                     <label className="text-sm font-semibold">Lugar</label>
                     <p className="text-sm text-gray-700">
-                        {business} <br />
+                        {business} <br/>
                         {address}
                     </p>
                 </div>
 
                 <div className="flex items-center gap-2 text-sm mb-3">
-                    <Calendar className="w-4 h-4 text-gray-500" />
+                    <Calendar className="w-4 h-4 text-gray-500"/>
                     <input
                         type="date"
                         value={date}
@@ -125,7 +171,7 @@ export default function Appoint({ service, onCancel }) {
 
                 {/* Hora de inicio */}
                 <div className="flex items-center gap-2 text-sm mb-3">
-                    <Clock className="w-4 h-4 text-gray-500" />
+                    <Clock className="w-4 h-4 text-gray-500"/>
                     <span>Inicio:</span>
                     <input
                         type="time"
@@ -137,7 +183,7 @@ export default function Appoint({ service, onCancel }) {
 
                 {/* Hora de fin */}
                 <div className="flex items-center gap-2 text-sm mb-3">
-                    <Clock className="w-4 h-4 text-gray-500" />
+                    <Clock className="w-4 h-4 text-gray-500"/>
                     <span>Fin:</span>
                     <input
                         type="time"
