@@ -9,7 +9,7 @@ function getImageUrl(service) {
     return `${pocketbaseUrl}/api/files/services/${service.id}/${service.logo}`;
 }
 
-export default function ServiceCard({service}) {
+export default function ServiceCard({service, onClick}) {
     const imageUrl = getImageUrl(service);
     const originalPrice = service.price || 0;
     const discount = service.discount || 0;
@@ -20,7 +20,9 @@ export default function ServiceCard({service}) {
 
     return (
         <div
-            className="w-full max-w-lg h-full md:h-40 bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-200 flex flex-col md:flex-row gap-4 md:gap-6">
+            className="w-full max-w-lg h-full md:h-40 bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-200 flex flex-col md:flex-row gap-4 md:gap-6 cursor-pointer"
+            onClick={() => onClick(service)}
+        >
             {/* LA FOTO */}
             <div className="md:basis-2/5 h-32 md:h-full flex items-center justify-center overflow-hidden rounded-xl">
                 {imageUrl ? (
