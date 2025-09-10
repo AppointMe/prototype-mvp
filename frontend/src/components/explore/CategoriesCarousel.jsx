@@ -91,11 +91,11 @@ export default function CategoriesCarousel({selected, onSelect}) {
     }
 
     return (
-        <div className="flex items-center justify-center gap-2 w-full max-w-6xl mt-6">
+        <div className="flex items-center justify-center gap-2 w-full max-w-6xl mt-6 mb-6 md:mb-1">
             {/* Flecha izquierda */}
             <button
                 onClick={() => scrollBy(-300)}
-                className="p-2 rounded-full border border-gray-200 text-gray-600 hover:text-[#311B92] hover:border-[#311B92]"
+                className="hidden md:block p-2 rounded-full border border-gray-200 text-gray-600 hover:text-[#311B92] hover:border-[#311B92]"
                 aria-label="Anterior"
             >
                 <ChevronLeftIcon/>
@@ -121,7 +121,7 @@ export default function CategoriesCarousel({selected, onSelect}) {
             {/* Flecha derecha */}
             <button
                 onClick={() => scrollBy(300)}
-                className="p-2 rounded-full border border-gray-200 text-gray-600 hover:text-[#311B92] hover:border-[#311B92]"
+                className="hidden md:block p-2 rounded-full border border-gray-200 text-gray-600 hover:text-[#311B92] hover:border-[#311B92]"
                 aria-label="Siguiente"
             >
                 <ChevronRightIcon/>
