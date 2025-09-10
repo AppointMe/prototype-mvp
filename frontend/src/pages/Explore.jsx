@@ -2,10 +2,9 @@
 import React, {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import { pb } from "@/lib/pocketbase.js";
+
 import SearchBar from "../components/explore/searchbar";
 import CategoriesCarousel from "../components/explore/CategoriesCarousel";
-
-import ServiceCard from "../components/explore/ServiceCard";
 import ServicesCarousel from "../components/explore/ServicesCarousel";
 
 
