@@ -7,7 +7,8 @@ import ServiceCard from "./ServiceCard";
 export default function ServicesCarousel({ 
     title, 
     services = [], 
-    loading = false 
+    loading = false,
+    onSelectService = () => {}
 }) {
     const scrollRef = useRef(null);
 
@@ -70,7 +71,7 @@ export default function ServicesCarousel({
             >
                 {services.map((service) => (
                     <div key={service.id} className="min-w-[320px]">
-                        <ServiceCard service={service} />
+                        <ServiceCard service={service} onClick={() => onSelectService(service)} />
                     </div>
                 ))}
             </div>

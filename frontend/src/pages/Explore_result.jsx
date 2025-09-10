@@ -94,6 +94,7 @@ export default function ExploreResult() {
                                         id: s.id,
                                         business: s.business || null,
                                         description: s.description || null,
+                                        duration: s.duration || 1.5,
                                     },
                                 ]}
                                 onViewAll={() => alert(`Ver todos los servicios de ${s.title}`)}

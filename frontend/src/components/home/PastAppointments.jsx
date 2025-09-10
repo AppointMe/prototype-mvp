@@ -42,7 +42,7 @@ export default function PastAppointments({ appointments = [] }) {
                     return (
                         <li
                             key={appointment.id}
-                            className="flex flex-row items-center w-full max-w-lg lg:min-w-[200px] lg:max-w-xs bg-white rounded-xl p-4 border border-[var(--color-border)] transition"
+                            className="flex flex-row items-center w-full max-w-lg lg:min-w-[200px] lg:max-w-sm bg-white rounded-xl p-4 border border-[var(--color-border)] transition"
                         >
                             {imgUrl ? (
                                 <img
