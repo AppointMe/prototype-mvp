@@ -1,11 +1,11 @@
 // src/components/explore/CategoriesCarousel.jsx
-import { useEffect, useMemo, useRef, useState } from "react";
+import {useEffect, useMemo, useRef, useState} from "react";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import CategoryCard from "./CategoryCard";
-import { pb } from "@/lib/pocketbase.js";
+import {pb} from "@/lib/pocketbase.js";
 
-export default function CategoriesCarousel({ selected, onSelect }) {
+export default function CategoriesCarousel({selected, onSelect}) {
     const [services, setServices] = useState([]);
     const [loading, setLoading] = useState(true);
     const [err, setErr] = useState("");
@@ -41,7 +41,9 @@ export default function CategoriesCarousel({ selected, onSelect }) {
                 setLoading(false);
             }
         })();
-        return () => { mounted = false; };
+        return () => {
+            mounted = false;
+        };
     }, []);
 
     // Saca categorías únicas, quita nulos y blanks, ordena alfabéticamente
@@ -55,13 +57,13 @@ export default function CategoriesCarousel({ selected, onSelect }) {
                 .forEach((c) => set.add(c));
         }
         return Array.from(set).sort((a, b) =>
-            a.localeCompare(b, "es", { sensitivity: "base" })
+            a.localeCompare(b, "es", {sensitivity: "base"})
         );
     }, [services]);
 
     const scrollBy = (px) => {
         if (!scrollRef.current) return;
-        scrollRef.current.scrollBy({ left: px, behavior: "smooth" });
+        scrollRef.current.scrollBy({left: px, behavior: "smooth"});
     };
 
     if (loading) {
@@ -89,43 +91,41 @@ export default function CategoriesCarousel({ selected, onSelect }) {
     }
 
     return (
-        <div className="w-full max-w-6xl mt-6">
-            <div className="flex items-center gap-2">
-                {/* Flecha izquierda */}
-                <button
-                    onClick={() => scrollBy(-300)}
-                    className="p-2 rounded-full border border-gray-200 text-gray-600 hover:text-[#311B92] hover:border-[#311B92]"
-                    aria-label="Anterior"
-                >
-                    <ChevronLeftIcon />
-                </button>
+        <div className="flex items-center justify-center gap-2 w-full max-w-6xl mt-6">
+            {/* Flecha izquierda */}
+            <button
+                onClick={() => scrollBy(-300)}
+                className="p-2 rounded-full border border-gray-200 text-gray-600 hover:text-[#311B92] hover:border-[#311B92]"
+                aria-label="Anterior"
+            >
+                <ChevronLeftIcon/>
+            </button>
 
-                {/* Carrusel horizontal */}
-                <div
-                    ref={scrollRef}
-                    className="flex-1 overflow-x-auto no-scrollbar scroll-smooth"
-                >
-                    <div className="flex gap-4 min-h-[112px] px-1">
-                        {categories.map((cat) => (
-                            <CategoryCard
-                                key={cat}
-                                label={cat}
-                                selected={selected === cat}
-                                onClick={() => onSelect?.(cat)}
-                            />
-                        ))}
-                    </div>
+            {/* Carrusel horizontal */}
+            <div
+                ref={scrollRef}
+                className="overflow-x-auto scroll-smooth"
+            >
+                <div className="flex gap-4 px-1">
+                    {categories.map((cat) => (
+                        <CategoryCard
+                            key={cat}
+                            label={cat}
+                            selected={selected === cat}
+                            onClick={() => onSelect?.(cat)}
+                        />
+                    ))}
                 </div>
-
-                {/* Flecha derecha */}
-                <button
-                    onClick={() => scrollBy(300)}
-                    className="p-2 rounded-full border border-gray-200 text-gray-600 hover:text-[#311B92] hover:border-[#311B92]"
-                    aria-label="Siguiente"
-                >
-                    <ChevronRightIcon />
-                </button>
             </div>
+
+            {/* Flecha derecha */}
+            <button
+                onClick={() => scrollBy(300)}
+                className="p-2 rounded-full border border-gray-200 text-gray-600 hover:text-[#311B92] hover:border-[#311B92]"
+                aria-label="Siguiente"
+            >
+                <ChevronRightIcon/>
+            </button>
         </div>
     );
 }
