@@ -244,9 +244,9 @@ export default function Calendar({ appointments = [] }) {
 
                             let dayTextClass = "";
                             if (isCurrentWeek) {
-                                dayTextClass = "text-[var(--color-text)] text-[32px]";
+                                dayTextClass = "text-[var(--color-text)] text-[30px]";
                             } else {
-                                dayTextClass = "text-[var(--color-stext)] text-[28px]";
+                                dayTextClass = "text-[var(--color-stext)] text-[26px]";
                             }
 
                             return (

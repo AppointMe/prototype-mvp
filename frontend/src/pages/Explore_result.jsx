@@ -43,7 +43,7 @@ export default function ExploreResult() {
 
     return (
         <div className="p-6">
-            <h1 className="text-xl font-bold text-[#311B92]">
+            <h1 className="text-xl font-bold text-[var(--color-text)]">
                 {category}
             </h1>
 
