@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import {useNavigate} from 'react-router'
-import {pb} from '@/lib/pocketbase.js'
+import {pb} from '../lib/pocketbase.js'
 
 const POCKETBASE_ENDPOINT = import.meta.env.VITE_POCKETBASE_URL
 

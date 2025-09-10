@@ -5,7 +5,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
-import Logo from "@/assets/logo-purple.svg";
+import Logo from "../../assets/logo-purple.svg";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);

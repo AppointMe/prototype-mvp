@@ -1,7 +1,7 @@
 // src/pages/Explore.jsx
 import React, {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
-import { pb } from "@/lib/pocketbase.js";
+import { pb } from "../lib/pocketbase.js";
 import SearchBar from "../components/explore/searchbar.jsx";
 import CategoriesCarousel from "../components/explore/CategoriesCarousel.jsx";
 

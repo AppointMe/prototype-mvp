@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import CategoryCard from "./CategoryCard";
-import { pb } from "@/lib/pocketbase.js";
+import { pb } from "../../lib/pocketbase.js";
 
 export default function CategoriesCarousel({ selected, onSelect }) {
     const [services, setServices] = useState([]);
