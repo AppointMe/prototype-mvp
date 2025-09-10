@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { pb } from "@/lib/pocketbase.js";
 
-import Upcoming from "@/components/Home/Upcoming.jsx";
-import Calendar from "@/components/Home/Calendar.jsx";
-import PastAppointments from "@/components/Home/PastAppointments.jsx";
+import Upcoming from "@/components/Home/Upcoming";
+import Calendar from "@/components/Home/Calendar";
+import PastAppointments from "@/components/Home/PastAppointments";
+import Navbar from "@/components/navbar/navbar.jsx";
 
 export default function Home() {
     const [appointments, setAppointments] = useState([]);
