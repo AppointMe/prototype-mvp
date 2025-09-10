@@ -169,13 +169,13 @@ export default function Appoint({service, onCancel}) {
             <div className="flex gap-3 mt-6">
                 <button
                     onClick={onCancel}
-                    className="flex-1 py-2 border rounded-lg text-gray-600 hover:bg-gray-50"
+                    className="flex-1 py-2 border rounded-lg text-gray-600 hover:bg-gray-50 cursor-pointer"
                 >
                     Cancelar
                 </button>
                 <button
                     onClick={handleAdd}
-                    className="flex-1 py-2 bg-[#311B92] text-white rounded-lg hover:bg-[#4527A0]"
+                    className="flex-1 py-2 bg-[#311B92] text-white rounded-lg hover:bg-[#4527A0] cursor-pointer"
                 >
                     Agregar a calendario
                 </button>
