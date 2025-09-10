@@ -149,13 +149,20 @@ export default function Appoint({service, onCancel}) {
                     />
                 </div>
 
-                <textarea
-                    placeholder="Comentarios"
-                    value={comments}
-                    onChange={(e) => setComments(e.target.value)}
-                    className="w-full border rounded text-sm"
-                    rows={3}
-                />
+                {/* Comentarios */}
+                <div className="flex flex-col items-center gap-2 text-sm mb-3">
+                    <div className="flex items-center gap-2 w-full">
+                        <label className="text-sm font-semibold">Comentarios</label>
+                    </div>
+                    <textarea
+                        placeholder="Escribe aquí tus comentarios..."
+                        value={comments}
+                        onChange={(e) => setComments(e.target.value)}
+                        className="w-full border border-[var(--color-border)] rounded text-sm p-2"
+                        rows={3}
+                    />
+                </div>
+
             </div>
 
             {/* Acciones */}
