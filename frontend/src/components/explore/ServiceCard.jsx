@@ -20,8 +20,8 @@ export default function ServiceCard({service}) {
 
     return (
         <div
-            className="w-full max-w-lg h-full md:h-48 bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-200 flex flex-col md:flex-row gap-4 md:gap-6">
-            {/* LA PUTA FOTO */}
+            className="w-full max-w-lg h-full md:h-40 bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-200 flex flex-col md:flex-row gap-4 md:gap-6">
+            {/* LA FOTO */}
             <div className="md:basis-2/5 h-32 md:h-full flex items-center justify-center overflow-hidden rounded-xl">
                 {imageUrl ? (
                     <img
@@ -33,9 +33,9 @@ export default function ServiceCard({service}) {
                     <span className="text-gray-500">Sin imagen disponible</span>
                 )}
             </div>
-            {/* LAS DEMAS ESTUPIDECES */}
+            {/* LA INFO */}
             <div className="flex-1 h-full flex flex-col justify-center">
-                <h2 className="text-base md:text-base font-bold text-gray-900 mb-1">{service.title}</h2>
+                <h2 className="text-base md:text-base font-bold text-gray-900 mb-1 mt-4">{service.title}</h2>
                 <div className="text-gray-700 text-sm md:text-base mb-2">{service.business}</div>
 
                 <div className="flex flex-row md:flex-col pb-4">
