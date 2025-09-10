@@ -2,52 +2,118 @@
 import { useState } from "react";
 import { Calendar, Clock } from "lucide-react";
 
-export default function Appoint({ service, business, onCancel }) {
+export default function Appoint({ service, onCancel }) {
     const [quantity, setQuantity] = useState(1);
-    const [date, setDate] = useState("");
-    const [time, setTime] = useState("");
+    const [date, setDate] = useState("2025-09-06");
+    const [startTime, setStartTime] = useState("15:00");
+    const [endTime, setEndTime] = useState("16:30");
     const [comments, setComments] = useState("");
 
+    if (!service) return null;
 
-    if (!service || !business) return null;
+    // --- Datos del servicio ---
+    const name = service.name || "Servicio";
+    const price = service.price || 0;
+    const business = service.business || "Negocio";
+    const logo = service.logo || "https://placehold.co/64";
+    const address = "Guatemala"; // Placeholder si no hay dirección
+    const description =
+        service.description ||
+        "Incluye corte, limpieza básica y aplicación de servicio estándar. El contenido puede variar según requerimientos.";
 
-    console.log('Service:', service);
-    console.log('Business:', business);
+    // --- Cálculo duración dinámica ---
+    function getDuration(start, end) {
+        if (!start || !end) return "";
+        const [sh, sm] = start.split(":").map(Number);
+        const [eh, em] = end.split(":").map(Number);
+        let startMinutes = sh * 60 + sm;
+        let endMinutes = eh * 60 + em;
+        if (endMinutes < startMinutes) endMinutes += 24 * 60; // Soporta cruces de medianoche
+        const diff = endMinutes - startMinutes;
+        const hours = Math.floor(diff / 60);
+        const minutes = diff % 60;
+        let res = "";
+        if (hours > 0) res += `${hours}h `;
+        if (minutes > 0) res += `${minutes}m`;
+        return res.trim() || "0m";
+    }
+
+    const duration = getDuration(startTime, endTime);
+
+    const total = quantity * (service.price || 0);
 
     const handleAdd = () => {
-        alert(`Agendado ${quantity} x ${service.name} en ${business.name}`);
+        alert(
+            `Agendado ${quantity} x ${name} en ${business} por Q${total}`
+        );
     };
 
     return (
-        <div className="w-full h-full bg-white rounded-2xl shadow p-6 flex flex-col">
-            {/* Servicio seleccionado */}
-            <h2 className="text-lg font-semibold text-gray-900">
-                {service.name}
-            </h2>
-            <p className="text-sm text-gray-500 mb-4">
-                {business.name} – {business.address}
-            </p>
-
-            {/* Cantidad */}
-            <div className="flex items-center gap-2 mb-4">
-                <button
-                    className="px-3 py-1 border rounded-full"
-                    onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                >
-                    –
-                </button>
-                <span className="px-2">{quantity}</span>
-                <button
-                    className="px-3 py-1 border rounded-full"
-                    onClick={() => setQuantity((q) => q + 1)}
-                >
-                    +
-                </button>
+        <div className="w-full bg-white rounded-2xl shadow p-6 flex flex-col gap-6">
+            {/* Encabezado */}
+            <div className="flex justify-between items-center">
+                <h2 className="text-lg font-semibold text-gray-900">{name}</h2>
+                <div className="flex items-center gap-2">
+                    <button
+                        className="px-3 py-1 border rounded-full"
+                        onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                    >
+                        –
+                    </button>
+                    <span className="px-2">{quantity}</span>
+                    <button
+                        className="px-3 py-1 border rounded-full"
+                        onClick={() => setQuantity((q) => q + 1)}
+                    >
+                        +
+                    </button>
+                </div>
             </div>
 
-            {/* Detalles */}
-            <div className="space-y-3 flex-1">
-                <div className="flex items-center gap-2 text-sm">
+            {/* Descripción */}
+            <p className="text-sm text-gray-600">{description}</p>
+
+            {/* Duración y precio unitario */}
+            <div className="flex gap-4 text-sm">
+                <div className="flex items-center gap-1 px-3 py-1 rounded-full bg-[#F3F0FF] text-[#311B92] font-medium">
+                    <Clock className="w-4 h-4" />
+                    {duration}
+                </div>
+                <div className="flex items-center gap-1 px-3 py-1 rounded-full bg-gray-100 text-gray-800 font-medium">
+                    Q{service.price || 0}
+                </div>
+            </div>
+
+            {/* Requisitos */}
+            <div>
+                <h3 className="text-sm font-semibold text-gray-900">Requisitos</h3>
+                <p className="text-sm text-gray-600">
+                    Indicar en comentarios si necesita personalización adicional
+                </p>
+            </div>
+
+            {/* Detalles de la cita */}
+            <div className="border-t pt-4">
+                <h3 className="text-base font-semibold text-gray-900 mb-4">
+                    DETALLES DE LA CITA
+                </h3>
+
+                <div className="flex justify-between text-sm mb-3">
+          <span className="text-gray-600">
+            {quantity} x {name}
+          </span>
+                    <span className="font-semibold">Q {total}</span>
+                </div>
+
+                <div className="mb-3">
+                    <label className="text-sm font-semibold">Lugar</label>
+                    <p className="text-sm text-gray-700">
+                        {business} <br />
+                        {address}
+                    </p>
+                </div>
+
+                <div className="flex items-center gap-2 text-sm mb-3">
                     <Calendar className="w-4 h-4 text-gray-500" />
                     <input
                         type="date"
@@ -56,17 +122,33 @@ export default function Appoint({ service, business, onCancel }) {
                         className="border rounded px-2 py-1 w-full"
                     />
                 </div>
-                <div className="flex items-center gap-2 text-sm">
+
+                {/* Hora de inicio */}
+                <div className="flex items-center gap-2 text-sm mb-3">
                     <Clock className="w-4 h-4 text-gray-500" />
+                    <span>Inicio:</span>
                     <input
                         type="time"
-                        value={time}
-                        onChange={(e) => setTime(e.target.value)}
+                        value={startTime}
+                        onChange={(e) => setStartTime(e.target.value)}
                         className="border rounded px-2 py-1 w-full"
                     />
                 </div>
+
+                {/* Hora de fin */}
+                <div className="flex items-center gap-2 text-sm mb-3">
+                    <Clock className="w-4 h-4 text-gray-500" />
+                    <span>Fin:</span>
+                    <input
+                        type="time"
+                        value={endTime}
+                        onChange={(e) => setEndTime(e.target.value)}
+                        className="border rounded px-2 py-1 w-full"
+                    />
+                </div>
+
                 <textarea
-                    placeholder="Comentarios (ej. retiro previo de esmalte)"
+                    placeholder="Comentarios"
                     value={comments}
                     onChange={(e) => setComments(e.target.value)}
                     className="w-full border rounded px-2 py-1 text-sm"
@@ -78,13 +160,13 @@ export default function Appoint({ service, business, onCancel }) {
             <div className="flex gap-3 mt-6">
                 <button
                     onClick={onCancel}
-                    className="flex-1 py-2 border rounded-lg text-gray-600"
+                    className="flex-1 py-2 border rounded-lg text-gray-600 hover:bg-gray-50"
                 >
                     Cancelar
                 </button>
                 <button
                     onClick={handleAdd}
-                    className="flex-1 py-2 bg-[#311B92] text-white rounded-lg"
+                    className="flex-1 py-2 bg-[#311B92] text-white rounded-lg hover:bg-[#4527A0]"
                 >
                     Agregar a calendario
                 </button>
