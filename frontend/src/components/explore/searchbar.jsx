@@ -25,7 +25,13 @@ export default function SearchBar({ onSearch }) {
           Encuentra el servicio que necesitas y agenda ahora
         </h2>
 
-        <div className="flex flex-col md:flex-row items-center justify-center gap-3 w-full md:max-w-5xl">
+        <form
+          className="flex flex-col md:flex-row items-center justify-center gap-3 w-full md:max-w-5xl"
+          onSubmit={e => {
+            e.preventDefault();
+            handleSearch();
+          }}
+        >
           {/* Input de búsqueda */}
           <div className="flex items-center border rounded px-3 py-2 flex-1 w-full md:max-w-xl">
             <SearchIcon className="text-gray-500 mr-2" fontSize="small" />
@@ -76,13 +82,13 @@ export default function SearchBar({ onSearch }) {
 
           {/* Botón */}
           <button
-              onClick={handleSearch}
+              type="submit"
               className="hidden lg:block px-6 py-2 text-white rounded text-sm hover:opacity-90"
               style={{ backgroundColor: "#311B92" }}
           >
             Buscar Servicio
           </button>
-        </div>
+        </form>
       </div>
   );
 }
