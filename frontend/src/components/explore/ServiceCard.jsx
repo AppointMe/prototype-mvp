@@ -20,7 +20,7 @@ export default function ServiceCard({service}) {
 
     return (
         <div
-            className="w-full max-w-lg h-full md:h-40 bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-200 flex flex-col md:flex-row gap-4 md:gap-6">
+            className="w-full max-w-lg h-full md:h-40 bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-200 flex flex-col md:flex-row gap-4 md:gap-6 cursor-pointer">
             {/* LA FOTO */}
             <div className="md:basis-2/5 h-32 md:h-full flex items-center justify-center overflow-hidden rounded-xl">
                 {imageUrl ? (
